@@ -127,6 +127,10 @@ class BrowserWidget(QtGui.QWidget):
             self.ui.scroll_area_layout.removeWidget(x)
             x.deleteLater()
         self._dynamic_widgets = []
+        
+        # lastly, clear selection
+        self.clear_selection()
+        
             
     def set_message(self, message):
         """
@@ -197,11 +201,13 @@ class BrowserWidget(QtGui.QWidget):
             for i in self._dynamic_widgets:
                 i.setVisible(True)
 
-        elif(text) > 2:
+        elif len(text) > 2:
             # cull by string for strings > 2 chars
             lower_text = text.lower()
             for i in self._dynamic_widgets:
-                details = i.get_details()
+                # note the qstring -> str conversion
+                # since qstring has no lower method
+                details = str(i.get_details())
                 if details is None: # header
                     i.setVisible(True)
                 elif lower_text in details.lower():

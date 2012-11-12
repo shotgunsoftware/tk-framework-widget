@@ -3,7 +3,6 @@
 # Copyright (c) 2008 Shotgun Software, Inc
 # ----------------------------------------------------
 
-
 echo "Building UIs for PySide..."
 
 pyside-uic --from-imports header.ui  > ../ui_pyside/header.py

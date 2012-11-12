@@ -63,6 +63,7 @@ class ListItem(ListBase):
             
             self._worker_uid = self._worker.queue_work(self._download_thumbnail, {"url": url})
             self._worker.work_completed.connect(self._on_worker_task_complete)
+            self._worker.work_failure.connect( self._on_worker_failure)
         else:
             # assume url is a path on disk or resource
             self.ui.thumbnail.setPixmap(QtGui.QPixmap(url))
@@ -129,4 +130,16 @@ class ListItem(ListBase):
             self.ui.thumbnail.setPixmap(QtGui.QPixmap(path))
         except:
             self.ui.thumbnail.setPixmap(QtGui.QPixmap(":/res/thumb_empty.png"))
+
+    def _on_worker_failure(self, uid, msg):
+        
+        if self._worker_uid != uid:
+            # not our job. ignore
+            return
+
+        # stop spin
+        self._timer.stop()
+    
+        # show error message
+        self._app.log_warning("Worker error: %s" % msg)
 
