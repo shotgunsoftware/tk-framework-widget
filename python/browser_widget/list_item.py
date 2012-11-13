@@ -111,7 +111,14 @@ class ListItem(ListBase):
         # now try to cache it
         try:
             self._app.tank.execute_hook("create_folder", path=os.path.dirname(path_to_cached_thumb))
-            shutil.copy(temp_file, path_to_cached_thumb)
+            old_umask = os.umask(0)
+            try:
+                shutil.copy(temp_file, path_to_cached_thumb)
+                # modify the permissions of the file so it's writeable by others
+                os.chmod(path_to_cached_thumb, 0666)
+            finally:
+                os.umask(old_umask)
+            
         except Exception, e:
             print "Could not cache thumbnail %s in %s. Error: %s" % (url, path_to_cached_thumb, e)
         
