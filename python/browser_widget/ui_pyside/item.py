@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'item.ui'
 #
-# Created: Sun Jul 15 14:28:08 2012
+# Created: Mon Dec 17 15:23:23 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -40,7 +40,7 @@ class Ui_Item(object):
         self.thumbnail.setObjectName("thumbnail")
         self.horizontalLayout.addWidget(self.thumbnail)
         self.details = QtGui.QLabel(self.background)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.details.sizePolicy().hasHeightForWidth())
