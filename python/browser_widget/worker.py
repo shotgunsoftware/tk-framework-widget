@@ -7,7 +7,7 @@ import urllib
 import uuid
 import sys
 
-from PySide import QtCore, QtGui
+from tank.platform.qt import QtCore, QtGui
 
 class Worker(QtCore.QThread):
     

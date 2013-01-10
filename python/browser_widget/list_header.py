@@ -5,7 +5,7 @@ Copyright (c) 2012 Shotgun Software, Inc
 import os
 import sys
 
-from PySide import QtCore, QtGui
+from tank.platform.qt import QtCore, QtGui
 from .ui_pyside.header import Ui_Header
 
 from .list_base import ListBase

@@ -8,7 +8,7 @@ import urllib
 import shutil
 import sys
 
-from PySide import QtCore, QtGui
+from tank.platform.qt import QtCore, QtGui
 from .ui_pyside.item import Ui_Item
 
 from .list_base import ListBase

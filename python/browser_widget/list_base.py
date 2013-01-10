@@ -6,7 +6,7 @@ import os
 import urllib
 import sys
 
-from PySide import QtCore, QtGui
+from tank.platform.qt import QtCore, QtGui
 
 
 class ListBase(QtGui.QWidget):
