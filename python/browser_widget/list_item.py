@@ -85,14 +85,12 @@ class ListItem(ListBase):
         url = data["url"]
         
         # first check in our thumbnail cache
-        thumb_cache_root = os.path.join(self._app.tank.project_path, "tank", "cache", "thumbnails")
-        
         url_obj = urlparse.urlparse(url)
         url_path = url_obj.path
         path_chunks = url_path.split("/")
         
-        path_chunks.insert(0, thumb_cache_root)
-        # now have something like ["/studio/proj/tank/cache/thumbnails", "", "thumbs", "1", "2", "2.jpg"]
+        path_chunks.insert(0, self._app.cache_location)
+        # now have something like ["/studio/proj/tank/cache/tk-framework-widget", "", "thumbs", "1", "2", "2.jpg"]
         
         # treat the list of path chunks as an arg list
         path_to_cached_thumb = os.path.join(*path_chunks)
@@ -110,15 +108,11 @@ class ListItem(ListBase):
 
         # now try to cache it
         try:
-            self._app.tank.execute_hook("create_folder", path=os.path.dirname(path_to_cached_thumb))
-            old_umask = os.umask(0)
-            try:
-                shutil.copy(temp_file, path_to_cached_thumb)
-                # modify the permissions of the file so it's writeable by others
-                os.chmod(path_to_cached_thumb, 0666)
-            finally:
-                os.umask(old_umask)
-            
+            self._app.ensure_folder_exists(os.path.dirname(path_to_cached_thumb))
+            shutil.copy(temp_file, path_to_cached_thumb)
+            # as a tmp file downloaded by urlretrieve, permissions are super strict
+            # modify the permissions of the file so it's writeable by others
+            os.chmod(path_to_cached_thumb, 0666)            
         except Exception, e:
             print "Could not cache thumbnail %s in %s. Error: %s" % (url, path_to_cached_thumb, e)
         
