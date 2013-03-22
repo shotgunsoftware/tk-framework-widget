@@ -203,18 +203,29 @@ class BrowserWidget(QtGui.QWidget):
 
         elif len(text) > 2: # cull by string for strings > 2 chars
             
-            # cast to str - pyqt QString wrapper does not support lower
-            lower_text = str(text).lower()  
+            # if running PyQt, convert QString to str
+            if not isinstance(text, basestring):
+                # convert QString to str
+                text = str(text)
+            
+            # now we have a str or unicode object which has the lower() method
+            lower_text = text.lower()  
             
             for i in self._dynamic_widgets:
                 
                 details = i.get_details()
+
+                # if running PyQt, convert QString to str
+                details_lower = details
+                if not isinstance(details_lower, basestring):
+                    details_lower = str(details_lower)
+                # now we have a str or unicode object which has the lower() method
+                details_lower = details_lower.lower()
                 
                 if details is None: # header
                     i.setVisible(True)
                 
-                # note! cast to str - pyqt QString wrapper does not support lower
-                elif lower_text in str(details).lower(): 
+                elif lower_text in details_lower: 
                     i.setVisible(True)
                     
                 else:
