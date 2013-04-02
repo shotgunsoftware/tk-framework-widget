@@ -21,6 +21,9 @@ class BrowserWidget(QtGui.QWidget):
     # when someone double clicks on an item
     action_requested = QtCore.Signal()
     
+    # called when the list contents have been modified:
+    list_modified = QtCore.Signal()
+    
     
     ######################################################################################
     # Init & Destruct
@@ -39,8 +42,6 @@ class BrowserWidget(QtGui.QWidget):
         self._app = None
         self._worker = None
         self._current_work_id = None
-        self._selected_item = None
-        self._selected_items = []
         self._dynamic_widgets = []
         self._multi_select = False
         self._search = True
@@ -58,11 +59,11 @@ class BrowserWidget(QtGui.QWidget):
         # search
         self.ui.search.textEdited.connect(self._on_search_text_changed)
         
-    def enable_multi_select(self, status):
+    def enable_multi_select(self, enable):
         """
         Should we enable multi select
         """
-        self._multi_select = True
+        self._multi_select = enable
         
     def enable_search(self, status):
         """
@@ -105,6 +106,8 @@ class BrowserWidget(QtGui.QWidget):
         self._timer.start(100)
         # queue up work
         self._current_work_id = self._worker.queue_work(self.get_data, data, asap=True)
+        
+        self.list_modified.emit()
     
     def clear(self):
         """
@@ -124,12 +127,18 @@ class BrowserWidget(QtGui.QWidget):
             self._worker.clear()
             
         for x in self._dynamic_widgets:
+            # remove widget from layout:
             self.ui.scroll_area_layout.removeWidget(x)
+            # set it's parent to None so that it is removed from the widget hierarchy
+            x.setParent(None)
+            # mark it to be deleted when event processing returns to the main loop
             x.deleteLater()
         self._dynamic_widgets = []
         
         # lastly, clear selection
         self.clear_selection()
+        
+        self.list_modified.emit()
         
             
     def set_message(self, message):
@@ -147,20 +156,25 @@ class BrowserWidget(QtGui.QWidget):
         """
         for x in self._dynamic_widgets:
             x.set_selected(False)        
-        self._selected_item = None
-        self._selected_items = []
                 
     def get_selected_item(self):
         """
         Gets the last selected item, None if no selection
         """
-        return self._selected_item
+        for widget in self._dynamic_widgets:
+            if widget.is_selected():
+                return widget
+        return None
     
     def get_selected_items(self):
         """
         Returns entire selection
         """
-        return self._selected_items
+        selected_items = []
+        for widget in self._dynamic_widgets:
+            if widget.is_selected():
+                selected_items.append(widget)
+        return selected_items
         
     def get_items(self):
         return self._dynamic_widgets
@@ -263,6 +277,9 @@ class BrowserWidget(QtGui.QWidget):
     
         # process!
         self.process_result(data)
+        
+        # and just in case the list has been modified
+        self.list_modified.emit()
             
     
     def _update_spinner(self):
@@ -281,27 +298,12 @@ class BrowserWidget(QtGui.QWidget):
             return
         
         if self._multi_select:
-            if item.is_selected():
-                # remove from selection
-                item.set_selected(False)
-                # remove it from list of selected items
-                s = set(self._selected_items) - set([item])
-                self._selected_items = list(s)
-                if len(self._selected_items) > 0:
-                    self._selected_item = self._selected_items[0]
-                else:
-                    self._selected_item = None 
-            else:
-                # add to selection
-                item.set_selected(True)
-                self._selected_item = item
-                self._selected_items.append(item)
+            # invert selection:
+            item.set_selected(not item.is_selected())
         else:
             # single select
             self.clear_selection()
             item.set_selected(True)
-            self._selected_item = item
-            self._selected_items = [item]
             
         self.selection_changed.emit()
 
@@ -316,7 +318,10 @@ class BrowserWidget(QtGui.QWidget):
         self.ui.scroll_area_layout.addWidget(widget)
         self._dynamic_widgets.append(widget)   
         widget.clicked.connect( self._on_item_clicked )
-        widget.double_clicked.connect( self._on_item_double_clicked )   
+        widget.double_clicked.connect( self._on_item_double_clicked )  
+        
+        self.list_modified.emit()
+         
         return widget  
 
 
