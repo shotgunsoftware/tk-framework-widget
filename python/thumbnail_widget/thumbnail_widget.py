@@ -38,12 +38,12 @@ class ThumbnailWidget(QtGui.QWidget):
 
     @property
     def thumbnail(self):
-        return self._ui.thumbnail.pixmap()
+        pm = self._ui.thumbnail.pixmap()
+        return pm if pm and not pm.isNull() else None
+    
     @thumbnail.setter
     def thumbnail(self, value):
-        if not value:
-            value = QtGui.QPixmap()
-        self._ui.thumbnail.setPixmap(value)
+        self._ui.thumbnail.setPixmap(value if value else QtGui.QPixmap())
         self._update_ui()
         self.thumbnail_changed.emit()
         
@@ -157,8 +157,10 @@ class ThumbnailWidget(QtGui.QWidget):
                 self._btns_visibility = 1.0
         
     def _on_screenshot(self):
-        path = None
-
+        """
+        Perform the actual screenshot
+        """
+        
         # hide the containing window
         # (AD) - we can't hide the window as this will break modality!  Instead
         # we have to move the window off the screen:
@@ -168,6 +170,7 @@ class ThumbnailWidget(QtGui.QWidget):
         # make sure this event is processed:
         QtCore.QCoreApplication.processEvents()
         
+        pm = QtGui.QPixmap()
         try:
             # screenshot            
             path = tempfile.NamedTemporaryFile(suffix=".png", prefix="tanktmp", delete=False).name
@@ -182,11 +185,15 @@ class ThumbnailWidget(QtGui.QWidget):
                 # use external boxcutter tool
                 bc = os.path.abspath(os.path.join(__file__, "../resources/boxcutter.exe"))
                 subprocess.check_call([bc, path])
+
+            # load into pixmap:                
+            pm.load(path)
         finally:
             # restore the window:
-            #self.window().show()
             self.window().setGeometry(win_geom)
             QtCore.QCoreApplication.processEvents()
+            
+            # remove the temporary file:
+            os.remove(path)
 
-        pm = QtGui.QPixmap(path)
         return pm
