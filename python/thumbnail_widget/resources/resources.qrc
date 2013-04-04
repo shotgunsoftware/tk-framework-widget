@@ -1,7 +1,5 @@
 <RCC>
   <qresource prefix="res">
-    <file>folder_hl.png</file>
-    <file>folder.png</file>
     <file>camera_hl.png</file>
     <file>camera.png</file>
   </qresource>

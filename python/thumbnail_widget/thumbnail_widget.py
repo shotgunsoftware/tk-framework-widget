@@ -9,7 +9,7 @@ import tempfile
 import subprocess
 
 from tank.platform.qt import QtCore, QtGui
-from .ui.thumbnail_ui import Ui_ThumbnailForm
+from .ui.thumbnail_widget import Ui_ThumbnailWidget
     
 class ThumbnailWidget(QtGui.QWidget):
     """
@@ -20,7 +20,7 @@ class ThumbnailWidget(QtGui.QWidget):
     def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
         
-        self._ui = Ui_ThumbnailForm()
+        self._ui = Ui_ThumbnailWidget()
         self._ui.setupUi(self)
         
         # create layout to control buttons frame
@@ -32,7 +32,6 @@ class ThumbnailWidget(QtGui.QWidget):
         
         # connect to buttons:
         self._ui.camera_btn.clicked.connect(self._on_camera_clicked)
-        self._ui.browse_btn.clicked.connect(self._on_browse_clicked)
 
         self._btns_transition_anim = None
         self._update_ui()
@@ -50,9 +49,6 @@ class ThumbnailWidget(QtGui.QWidget):
         
     def enable_screen_capture(self, enable):
         self._ui.camera_btn.setVisible(enable)
-        
-    def enable_fs_browse(self, enable):
-        self._ui.browse_btn.setVisible(enable)
         
     def resizeEvent(self, event):
         self._update_ui()
@@ -76,7 +72,7 @@ class ThumbnailWidget(QtGui.QWidget):
         """
         Return if any of the buttons are enabled
         """
-        return not (self._ui.camera_btn.isHidden() and self._ui.browse_btn.isHidden())
+        return not (self._ui.camera_btn.isHidden())
         
     """
     button visibility property used by QPropertyAnimation
@@ -119,13 +115,6 @@ class ThumbnailWidget(QtGui.QWidget):
         pm = self._on_screenshot()
         if pm:
             self.thumbnail = pm
-        
-    def _on_browse_clicked(self):
-        fileName = QtGui.QFileDialog.getOpenFileName(self, "Open Image", "", "Image Files (*.png *.jpg *.bmp)")
-        if fileName:
-            pm = QtGui.QPixmap(fileName)
-            if pm:
-                self.thumbnail = pm
  
     def _update_ui(self):
     
@@ -176,6 +165,9 @@ class ThumbnailWidget(QtGui.QWidget):
         win_geom = self.window().geometry()
         self.window().setGeometry(1000000, 1000000, win_geom.width(), win_geom.height())
         
+        # make sure this event is processed:
+        QtCore.QCoreApplication.processEvents()
+        
         try:
             # screenshot            
             path = tempfile.NamedTemporaryFile(suffix=".png", prefix="tanktmp", delete=False).name
@@ -194,6 +186,7 @@ class ThumbnailWidget(QtGui.QWidget):
             # restore the window:
             #self.window().show()
             self.window().setGeometry(win_geom)
+            QtCore.QCoreApplication.processEvents()
 
         pm = QtGui.QPixmap(path)
         return pm

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ThumbnailForm</class>
- <widget class="QWidget" name="ThumbnailForm">
+ <class>ThumbnailWidget</class>
+ <widget class="QWidget" name="ThumbnailWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>443</width>
-    <height>323</height>
+    <width>390</width>
+    <height>303</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -106,14 +106,14 @@ background-color: rgba(0,0,0, 64)
        <widget class="QPushButton" name="camera_btn">
         <property name="minimumSize">
          <size>
-          <width>48</width>
-          <height>48</height>
+          <width>64</width>
+          <height>64</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>48</width>
-          <height>48</height>
+          <width>64</width>
+          <height>64</height>
          </size>
         </property>
         <property name="cursor">
@@ -147,57 +147,8 @@ background-color: rgba(0,0,0, 64)
         </property>
         <property name="iconSize">
          <size>
-          <width>48</width>
-          <height>48</height>
-         </size>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="browse_btn">
-        <property name="minimumSize">
-         <size>
-          <width>48</width>
-          <height>48</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>48</width>
-          <height>48</height>
-         </size>
-        </property>
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">#browse_btn {
-    background-color: rgba( 0, 0, 0, 0 );
-	border-image: url(:/res/folder.png);
-	border: none;
-}
-#browse_btn:hover{
-    background-color: rgba( 0, 0, 0, 0 );
-	border-image: url(:/res/folder_hl.png);
-	border: none;
-}
-
-</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="resources.qrc">
-          <normaloff>:/res/folder.png</normaloff>:/res/folder.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>48</width>
-          <height>48</height>
+          <width>64</width>
+          <height>64</height>
          </size>
         </property>
         <property name="flat">
@@ -222,6 +173,11 @@ background-color: rgba(0,0,0, 64)
     </item>
     <item>
      <widget class="QLabel" name="label">
+      <property name="styleSheet">
+       <string notr="true">#label {
+color: rgb(225, 225, 225);
+}</string>
+      </property>
       <property name="text">
        <string>Take a Screenshot</string>
       </property>

@@ -4,7 +4,7 @@
 # ----------------------------------------------------
 
 echo "building user interfaces..."
-pyside-uic --from-imports thumbnail_ui.ui > ../ui/thumbnail_ui.py
+pyside-uic --from-imports thumbnail_widget.ui > ../ui/thumbnail_widget.py
 
 echo "building resources..."
 pyside-rcc resources.qrc > ../ui/resources_rc.py
