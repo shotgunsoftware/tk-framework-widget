@@ -71,6 +71,11 @@ class BrowserWidget(QtGui.QWidget):
             "gradient":{"background":"qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(97, 97, 97, 255), stop:1 rgba(49, 49, 49, 255));"},
             "none":{}
         }
+        self._title_margins = {
+            "gradient":[12,3,12,3],
+            "none":[3,3,3,3]
+        }
+        
         self._current_title_style = "none"
         self.title_style = "gradient"
         
@@ -80,11 +85,17 @@ class BrowserWidget(QtGui.QWidget):
     @title_style.setter
     def title_style(self, value):
         if value != self._current_title_style and value in self._title_styles.keys():
+            # change style sheet:
             self._current_title_style = value
             style = self._title_base_style.copy()
             style.update(self._title_styles[self._current_title_style])
             ss = self._style_as_string("#browser_header", style)
             self.ui.browser_header.setStyleSheet(ss)
+            
+            # change margins:
+            margins = self._title_margins.get(self._current_title_style)
+            if margins:
+                self.ui.browser_header.layout().setContentsMargins(margins[0], margins[1], margins[2], margins[3])
         
     def enable_multi_select(self, enable):
         """

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>456</width>
-    <height>447</height>
+    <width>572</width>
+    <height>566</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -44,7 +44,16 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_4">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>12</number>
+      </property>
+      <property name="topMargin">
+       <number>3</number>
+      </property>
+      <property name="rightMargin">
+       <number>12</number>
+      </property>
+      <property name="bottomMargin">
        <number>3</number>
       </property>
       <item>
@@ -99,7 +108,7 @@ padding-left: 15px</string>
    <item>
     <widget class="QStackedWidget" name="main_pages">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="items_page">
       <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -122,8 +131,8 @@ padding-left: 15px</string>
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>450</width>
-            <height>397</height>
+            <width>566</width>
+            <height>516</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -160,6 +169,9 @@ padding-left: 15px</string>
       </layout>
      </widget>
      <widget class="QWidget" name="loading_page">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <property name="spacing">
         <number>0</number>
@@ -171,6 +183,13 @@ padding-left: 15px</string>
         <widget class="QLabel" name="progress_bar">
          <property name="layoutDirection">
           <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#progress_bar {
+border-style: solid;
+border-width: 1px;
+border-radius: 2px;
+}</string>
          </property>
          <property name="text">
           <string/>
@@ -197,6 +216,13 @@ padding-left: 15px</string>
         <widget class="QLabel" name="status_message">
          <property name="layoutDirection">
           <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#status_message {
+border-style: solid;
+border-width: 1px;
+border-radius: 2px;
+}</string>
          </property>
          <property name="text">
           <string>Sorry, no items found!</string>

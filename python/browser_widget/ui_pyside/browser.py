@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'browser.ui'
 #
-# Created: Fri Apr  5 19:02:55 2013
+# Created: Sun Apr  7 12:08:43 2013
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_Browser(object):
     def setupUi(self, Browser):
         Browser.setObjectName("Browser")
-        Browser.resize(456, 447)
+        Browser.resize(572, 566)
         self.verticalLayout = QtGui.QVBoxLayout(Browser)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setContentsMargins(2, 2, 2, 2)
@@ -25,7 +25,7 @@ class Ui_Browser(object):
         self.browser_header.setFrameShadow(QtGui.QFrame.Raised)
         self.browser_header.setObjectName("browser_header")
         self.horizontalLayout_4 = QtGui.QHBoxLayout(self.browser_header)
-        self.horizontalLayout_4.setContentsMargins(3, 3, 3, 3)
+        self.horizontalLayout_4.setContentsMargins(12, 3, 12, 3)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.label = QtGui.QLabel(self.browser_header)
         self.label.setObjectName("label")
@@ -59,7 +59,7 @@ class Ui_Browser(object):
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setObjectName("scroll_area")
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 450, 397))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 566, 516))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_4 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_4.setSpacing(0)
@@ -75,6 +75,7 @@ class Ui_Browser(object):
         self.horizontalLayout_3.addWidget(self.scroll_area)
         self.main_pages.addWidget(self.items_page)
         self.loading_page = QtGui.QWidget()
+        self.loading_page.setStyleSheet("")
         self.loading_page.setObjectName("loading_page")
         self.horizontalLayout = QtGui.QHBoxLayout(self.loading_page)
         self.horizontalLayout.setSpacing(0)
@@ -82,6 +83,11 @@ class Ui_Browser(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.progress_bar = QtGui.QLabel(self.loading_page)
         self.progress_bar.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.progress_bar.setStyleSheet("#progress_bar {\n"
+"border-style: solid;\n"
+"border-width: 1px;\n"
+"border-radius: 2px;\n"
+"}")
         self.progress_bar.setText("")
         self.progress_bar.setPixmap(QtGui.QPixmap(":/res/progress_bar_1.png"))
         self.progress_bar.setAlignment(QtCore.Qt.AlignCenter)
@@ -96,6 +102,11 @@ class Ui_Browser(object):
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.status_message = QtGui.QLabel(self.status_page)
         self.status_message.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.status_message.setStyleSheet("#status_message {\n"
+"border-style: solid;\n"
+"border-width: 1px;\n"
+"border-radius: 2px;\n"
+"}")
         self.status_message.setAlignment(QtCore.Qt.AlignCenter)
         self.status_message.setWordWrap(True)
         self.status_message.setObjectName("status_message")
@@ -104,7 +115,7 @@ class Ui_Browser(object):
         self.verticalLayout.addWidget(self.main_pages)
 
         self.retranslateUi(Browser)
-        self.main_pages.setCurrentIndex(0)
+        self.main_pages.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(Browser)
 
     def retranslateUi(self, Browser):
