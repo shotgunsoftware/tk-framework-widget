@@ -18,7 +18,11 @@ class ListHeader(ListBase):
         # set up the UI
         self.ui = Ui_Header() 
         self.ui.setupUi(self)
-        self.ui.background.setStyleSheet("background-color: #6F6F6F; border: none")
+
+        # initialize line to be plain and the same colour as the text:        
+        self.ui.line.setFrameShadow(QtGui.QFrame.Plain)
+        clr = QtGui.QApplication.palette().text().color()
+        self.ui.line.setStyleSheet("#line{color: rgb(%d,%d,%d);}" % (clr.red(), clr.green(), clr.blue()))
 
     def set_title(self, title):
         self.ui.label.setText("<big>%s</big>" % title)

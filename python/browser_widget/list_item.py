@@ -35,16 +35,28 @@ class ListItem(ListBase):
         self._timer = QtCore.QTimer(self)
         self._timer.timeout.connect( self._update_spinner )
         self._current_spinner_index = 0
+        
+        # set up styles for selected/unselected states
+        self._unselected_style = {
+                "border-radius":"2px",
+                "border-style":"solid",
+                "border-width":"1px",
+                "border-color":"rgb(0,0,0,48)",
+                "background-color":"rgb(0,0,0,48)"
+        }
+        self._selected_style = self._unselected_style.copy()
+        self._selected_style["background-color"] = "rgb(112, 112, 112)"
+        self._selected_style["border-color"] = "rgb(112, 112, 112)"
+        
+        self.set_selected(False)
 
     def supports_selection(self):
         return True
 
     def set_selected(self, status):
         self._selected = status
-        if self._selected:
-            self.ui.background.setStyleSheet("background-color: #707070; border: none")
-        else:
-            self.ui.background.setStyleSheet("")
+        ss = self._style_as_string("#background", [self._unselected_style, self._selected_style][self._selected])
+        self.ui.background.setStyleSheet(ss)
             
     def is_selected(self):
         return self._selected
@@ -71,6 +83,10 @@ class ListItem(ListBase):
         
     ############################################################################################
     # internal stuff
+        
+    def _style_as_string(self, name, style_dict):
+        style_elements = ["%s: %s;" % (key, value) for key, value in style_dict.iteritems()] 
+        return "%s { %s }" % (name, "".join(style_elements)) 
         
     def _update_spinner(self):
         """

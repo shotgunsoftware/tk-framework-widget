@@ -6,38 +6,34 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>416</width>
+    <width>388</width>
     <height>100</height>
    </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>0</width>
-    <height>100</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="spacing">
-    <number>2</number>
-   </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_2">
    <property name="margin">
     <number>2</number>
    </property>
    <item>
-    <widget class="ClickBubblingGroupBox" name="background">
-     <property name="title">
-      <string/>
+    <widget class="QFrame" name="background">
+     <property name="styleSheet">
+      <string notr="true">#background {
+border-radius: 3px;
+border-style: solid;
+border-width: 1px;
+border-color: rgb(32,32,32);
+}</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
       <property name="spacing">
        <number>8</number>
       </property>
@@ -57,6 +53,9 @@
           <width>130</width>
           <height>90</height>
          </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
         </property>
         <property name="text">
          <string/>
@@ -97,12 +96,6 @@
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>ClickBubblingGroupBox</class>
-   <extends>QGroupBox</extends>
-   <header>.clickbubbling_groupbox</header>
-   <container>1</container>
-  </customwidget>
   <customwidget>
    <class>ThumbnailLabel</class>
    <extends>QLabel</extends>

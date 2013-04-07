@@ -2,39 +2,42 @@
 
 # Form implementation generated from reading ui file 'header.ui'
 #
-# Created: Mon Dec 17 15:23:23 2012
+# Created: Fri Apr  5 19:02:55 2013
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
 
-from tank.platform.qt import QtCore, QtGui
+from PySide import QtCore, QtGui
 
 class Ui_Header(object):
     def setupUi(self, Header):
         Header.setObjectName("Header")
-        Header.resize(399, 32)
+        Header.resize(389, 37)
+        Header.setMinimumSize(QtCore.QSize(0, 0))
+        Header.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.verticalLayout = QtGui.QVBoxLayout(Header)
         self.verticalLayout.setSpacing(2)
-        self.verticalLayout.setContentsMargins(2, 2, 2, 2)
+        self.verticalLayout.setContentsMargins(3, 12, 3, 3)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.background = ClickBubblingGroupBox(Header)
-        self.background.setTitle("")
-        self.background.setObjectName("background")
-        self.horizontalLayout = QtGui.QHBoxLayout(self.background)
-        self.horizontalLayout.setContentsMargins(2, 2, 2, 2)
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.label = QtGui.QLabel(self.background)
-        self.label.setWordWrap(True)
+        self.label = QtGui.QLabel(Header)
+        self.label.setStyleSheet("#name_label {\n"
+"font-size: 16px\n"
+"}")
+        self.label.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft)
         self.label.setObjectName("label")
-        self.horizontalLayout.addWidget(self.label)
-        self.verticalLayout.addWidget(self.background)
+        self.verticalLayout.addWidget(self.label)
+        self.line = QtGui.QFrame(Header)
+        self.line.setStyleSheet("")
+        self.line.setFrameShadow(QtGui.QFrame.Plain)
+        self.line.setFrameShape(QtGui.QFrame.HLine)
+        self.line.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line.setObjectName("line")
+        self.verticalLayout.addWidget(self.line)
 
         self.retranslateUi(Header)
         QtCore.QMetaObject.connectSlotsByName(Header)
 
     def retranslateUi(self, Header):
         Header.setWindowTitle(QtGui.QApplication.translate("Header", "Form", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("Header", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
+        self.label.setText(QtGui.QApplication.translate("Header", "<big>Header</big>", None, QtGui.QApplication.UnicodeUTF8))
 
-from .clickbubbling_groupbox import ClickBubblingGroupBox
-from . import resources_rc

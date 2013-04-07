@@ -36,8 +36,7 @@ class BrowserWidget(QtGui.QWidget):
         self.ui.setupUi(self)
 
         # hide the overlays
-        self.ui.load_overlay.setVisible(False)
-        self.ui.message_overlay.setVisible(False)
+        self.ui.main_pages.setCurrentWidget(self.ui.items_page)
 
         self._app = None
         self._worker = None
@@ -58,6 +57,34 @@ class BrowserWidget(QtGui.QWidget):
         
         # search
         self.ui.search.textEdited.connect(self._on_search_text_changed)
+        
+        # style:
+        self._title_base_style = {
+            "border":"none",
+            "border-colour":"rgb(32,32,32)",
+            "border-top-left-radius":"3px",
+            "border-top-right-radius":"3px",
+            "border-bottom-left-radius":"0px",
+            "border-bottom-right-radius":"0px"
+        }
+        self._title_styles = {
+            "gradient":{"background":"qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(97, 97, 97, 255), stop:1 rgba(49, 49, 49, 255));"},
+            "none":{}
+        }
+        self._current_title_style = "none"
+        self.title_style = "gradient"
+        
+    @property
+    def title_style(self):
+        return self._current_title_style
+    @title_style.setter
+    def title_style(self, value):
+        if value != self._current_title_style and value in self._title_styles.keys():
+            self._current_title_style = value
+            style = self._title_base_style.copy()
+            style.update(self._title_styles[self._current_title_style])
+            ss = self._style_as_string("#browser_header", style)
+            self.ui.browser_header.setStyleSheet(ss)
         
     def enable_multi_select(self, enable):
         """
@@ -101,8 +128,7 @@ class BrowserWidget(QtGui.QWidget):
         Called by outside code 
         """
         # start spinning
-        self.ui.scroll_area.setVisible(False)
-        self.ui.load_overlay.setVisible(True)
+        self.ui.main_pages.setCurrentWidget(self.ui.loading_page)
         self._timer.start(100)
         # queue up work
         self._current_work_id = self._worker.queue_work(self.get_data, data, asap=True)
@@ -114,9 +140,7 @@ class BrowserWidget(QtGui.QWidget):
         Clear widget of its contents.
         """
         # hide overlays
-        self.ui.load_overlay.setVisible(False)
-        self.ui.message_overlay.setVisible(False)
-        self.ui.scroll_area.setVisible(True)
+        self.ui.main_pages.setCurrentWidget(self.ui.items_page)
         
         # clear search box
         self.ui.search.setText("")
@@ -145,9 +169,7 @@ class BrowserWidget(QtGui.QWidget):
         """
         Replace the list of items with a single message
         """
-        self.ui.load_overlay.setVisible(False)
-        self.ui.message_overlay.setVisible(True)
-        self.ui.scroll_area.setVisible(False)
+        self.ui.main_pages.setCurrentWidget(self.ui.status_page)
         self.ui.status_message.setText(message)
         
     def clear_selection(self):
@@ -205,6 +227,10 @@ class BrowserWidget(QtGui.QWidget):
     ##########################################################################################
     # Internals
     
+    def _style_as_string(self, name, style_dict):
+        style_elements = ["%s: %s;" % (key, value) for key, value in style_dict.iteritems()] 
+        return "%s { %s }" % (name, "".join(style_elements)) 
+    
     def _on_search_text_changed(self, text):
         """
         Cull based on search box
@@ -254,8 +280,7 @@ class BrowserWidget(QtGui.QWidget):
             return
 
         # finally, turn off progress indication and turn on display
-        self.ui.scroll_area.setVisible(True)
-        self.ui.load_overlay.setVisible(False)        
+        self.ui.main_pages.setCurrentWidget(self.ui.items_page)
         self._timer.stop()
     
         # show error message
@@ -271,8 +296,7 @@ class BrowserWidget(QtGui.QWidget):
             return
 
         # finally, turn off progress indication and turn on display
-        self.ui.scroll_area.setVisible(True)
-        self.ui.load_overlay.setVisible(False)        
+        self.ui.main_pages.setCurrentWidget(self.ui.items_page)
         self._timer.stop()
     
         # process!
