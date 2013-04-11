@@ -61,7 +61,7 @@ class BrowserWidget(QtGui.QWidget):
         # style:
         self._title_base_style = {
             "border":"none",
-            "border-colour":"rgb(32,32,32)",
+            "border-color":"rgb(32,32,32)",
             "border-top-left-radius":"3px",
             "border-top-right-radius":"3px",
             "border-bottom-left-radius":"0px",
