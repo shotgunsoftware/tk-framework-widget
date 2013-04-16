@@ -305,13 +305,16 @@ class BrowserWidget(QtGui.QWidget):
         if self._current_work_id != uid:
             # not our job. ignore
             return
-
-        # finally, turn off progress indication and turn on display
-        self.ui.main_pages.setCurrentWidget(self.ui.items_page)
-        self._timer.stop()
     
         # process!
         self.process_result(data)
+
+        # if currently showing progress, switch to items page:
+        if self.ui.main_pages.currentWidget() == self.ui.loading_page:
+            self.ui.main_pages.setCurrentWidget(self.ui.items_page)
+        
+        # stop timer:
+        self._timer.stop()
         
         # and just in case the list has been modified
         self.list_modified.emit()
