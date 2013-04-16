@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'thumbnail_widget.ui'
 #
-# Created: Tue Apr 16 15:13:19 2013
+# Created: Tue Apr 16 16:55:34 2013
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,9 +12,10 @@ from PySide import QtCore, QtGui
 class Ui_ThumbnailWidget(object):
     def setupUi(self, ThumbnailWidget):
         ThumbnailWidget.setObjectName("ThumbnailWidget")
-        ThumbnailWidget.resize(339, 255)
+        ThumbnailWidget.resize(347, 266)
+        ThumbnailWidget.setStyleSheet("")
         self.thumbnail = QtGui.QLabel(ThumbnailWidget)
-        self.thumbnail.setGeometry(QtCore.QRect(310, 230, 81, 61))
+        self.thumbnail.setGeometry(QtCore.QRect(210, 190, 81, 61))
         self.thumbnail.setMinimumSize(QtCore.QSize(0, 0))
         self.thumbnail.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.thumbnail.setStyleSheet("")
@@ -23,9 +24,9 @@ class Ui_ThumbnailWidget(object):
         self.thumbnail.setAlignment(QtCore.Qt.AlignCenter)
         self.thumbnail.setObjectName("thumbnail")
         self.buttons_frame = QtGui.QFrame(ThumbnailWidget)
-        self.buttons_frame.setGeometry(QtCore.QRect(40, 30, 191, 161))
+        self.buttons_frame.setGeometry(QtCore.QRect(40, 30, 211, 191))
         self.buttons_frame.setStyleSheet("#buttons_frame {\n"
-"border-style: none;\n"
+"border-radius: 2px;\n"
 "background-color: rgba(0,0,0, 64);\n"
 "}")
         self.buttons_frame.setFrameShape(QtGui.QFrame.NoFrame)
@@ -47,7 +48,7 @@ class Ui_ThumbnailWidget(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.camera_btn.sizePolicy().hasHeightForWidth())
         self.camera_btn.setSizePolicy(sizePolicy)
-        self.camera_btn.setMinimumSize(QtCore.QSize(32, 32))
+        self.camera_btn.setMinimumSize(QtCore.QSize(64, 64))
         self.camera_btn.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.camera_btn.setCursor(QtCore.Qt.PointingHandCursor)
         self.camera_btn.setStyleSheet("#camera_btn {\n"
@@ -72,13 +73,13 @@ class Ui_ThumbnailWidget(object):
         spacerItem2 = QtGui.QSpacerItem(20, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem2)
         self.horizontalLayout_2.setStretch(0, 1)
-        self.horizontalLayout_2.setStretch(1, 3)
+        self.horizontalLayout_2.setStretch(1, 2)
         self.horizontalLayout_2.setStretch(2, 1)
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
         spacerItem3 = QtGui.QSpacerItem(20, 51, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem3)
         self.verticalLayout_2.setStretch(0, 1)
-        self.verticalLayout_2.setStretch(1, 3)
+        self.verticalLayout_2.setStretch(1, 2)
         self.verticalLayout_2.setStretch(2, 1)
 
         self.retranslateUi(ThumbnailWidget)

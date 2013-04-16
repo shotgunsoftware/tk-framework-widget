@@ -85,7 +85,7 @@ class ThumbnailWidget(QtGui.QWidget):
         return self._btns_visibility
     def set_btn_visibility(self, value):
         self._btns_visibility = value
-        self._ui.buttons_frame.setStyleSheet("#buttons_frame {background-color: rgba(32, 32, 32, %d)}" % (64 * value))
+        self._ui.buttons_frame.setStyleSheet("#buttons_frame {border-radius: 2px; background-color: rgba(32, 32, 32, %d);}" % (64 * value))
     btn_visibility = QtCore.Property(float, get_btn_visibility, set_btn_visibility)
         
     def _run_btns_transition_anim(self, direction):
@@ -133,8 +133,8 @@ class ThumbnailWidget(QtGui.QWidget):
             # whilst retaining aspect ratio
             pm_sz = pm.size()
                 
-            h_scale = float(thumbnail_geom.height())/float(pm_sz.height())
-            w_scale = float(thumbnail_geom.width())/float(pm_sz.width())
+            h_scale = float(thumbnail_geom.height()-4)/float(pm_sz.height())
+            w_scale = float(thumbnail_geom.width()-4)/float(pm_sz.width())
             scale = min(1.0, h_scale, w_scale)
             scale_contents = (scale < 1.0)
             
@@ -142,8 +142,8 @@ class ThumbnailWidget(QtGui.QWidget):
             new_width = min(int(pm_sz.width() * scale), thumbnail_geom.width())
             
             new_geom = QtCore.QRect(thumbnail_geom)
-            new_geom.moveLeft(thumbnail_geom.width()/2 - new_width/2)
-            new_geom.moveTop(thumbnail_geom.height()/2 - new_height/2)
+            new_geom.moveLeft(((thumbnail_geom.width()-4)/2 - new_width/2)+2)
+            new_geom.moveTop(((thumbnail_geom.height()-4)/2 - new_height/2)+2)
             new_geom.setWidth(new_width)
             new_geom.setHeight(new_height)
             thumbnail_geom = new_geom
