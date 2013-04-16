@@ -13,11 +13,15 @@ from .ui.thumbnail_widget import Ui_ThumbnailWidget
     
 class ThumbnailWidget(QtGui.QWidget):
     """
+    Thumbnail widget that provides screen capture functionality
     """
     
     thumbnail_changed = QtCore.Signal()
     
     def __init__(self, parent=None):
+        """
+        Construction
+        """
         QtGui.QWidget.__init__(self, parent)
         
         self._ui = Ui_ThumbnailWidget()
@@ -91,7 +95,7 @@ class ThumbnailWidget(QtGui.QWidget):
         if not self._btns_transition_anim:
             # set up anim:
             self._btns_transition_anim =  QtCore.QPropertyAnimation(self, "btn_visibility")                
-            self._btns_transition_anim.setDuration(100)
+            self._btns_transition_anim.setDuration(150)
             self._btns_transition_anim.setStartValue(0.0)
             self._btns_transition_anim.setEndValue(1.0)
             self._btns_transition_anim.finished.connect(self._on_btns_transition_anim_finished)
@@ -156,6 +160,25 @@ class ThumbnailWidget(QtGui.QWidget):
                 self._ui.buttons_frame.show()
                 self._btns_visibility = 1.0
         
+    def _safe_get_dialog(self):
+        """
+        Get the widgets dialog parent.  
+        
+        just call self.window() but this is unstable in Nuke
+        Previously this would
+        causing a crash on exit - suspect that it's caching
+        something internally which then doesn't get cleaned
+        up properly...
+        """
+        current_widget = self
+        while current_widget:
+            if isinstance(current_widget, QtGui.QDialog):
+                return current_widget
+            
+            current_widget = current_widget.parentWidget()
+            
+        return None
+           
     def _on_screenshot(self):
         """
         Perform the actual screenshot
@@ -164,17 +187,23 @@ class ThumbnailWidget(QtGui.QWidget):
         # hide the containing window
         # (AD) - we can't hide the window as this will break modality!  Instead
         # we have to move the window off the screen:
-        win_geom = self.window().geometry()
-        self.window().setGeometry(1000000, 1000000, win_geom.width(), win_geom.height())
+        win = self._safe_get_dialog()
+        win_geom = None
+        if win:
+            win_geom = win.geometry()
+            win.setGeometry(1000000, 1000000, win_geom.width(), win_geom.height())
         
-        # make sure this event is processed:
-        QtCore.QCoreApplication.processEvents()
-        
-        pm = QtGui.QPixmap()
+            # make sure this event is processed:
+            QtCore.QCoreApplication.processEvents()
+
+        path = None
+        pm = None
         try:
-            # screenshot            
-            path = tempfile.NamedTemporaryFile(suffix=".png", prefix="tanktmp", delete=False).name
-            
+            # get temporary file to use:
+            with tempfile.NamedTemporaryFile(suffix=".png", prefix="tanktmp", delete=False) as temp_file:
+                path = temp_file.name
+
+            # screenshot
             if sys.platform == "darwin":
                 # use built-in screenshot command on the mac
                 os.system("screencapture -m -i -s %s" % path)
@@ -185,15 +214,17 @@ class ThumbnailWidget(QtGui.QWidget):
                 # use external boxcutter tool
                 bc = os.path.abspath(os.path.join(__file__, "../resources/boxcutter.exe"))
                 subprocess.check_call([bc, path])
-
-            # load into pixmap:                
-            pm.load(path)
+                
+            # load into pixmap:
+            pm = QtGui.QPixmap(path)
         finally:
             # restore the window:
-            self.window().setGeometry(win_geom)
-            QtCore.QCoreApplication.processEvents()
+            if win:
+                win.setGeometry(win_geom)
+                QtCore.QCoreApplication.processEvents()
             
             # remove the temporary file:
-            os.remove(path)
+            if path:
+                os.remove(path)
 
         return pm
