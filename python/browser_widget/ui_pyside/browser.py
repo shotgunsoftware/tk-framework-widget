@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'browser.ui'
 #
-# Created: Sun Apr  7 12:08:43 2013
+# Created: Tue Apr 16 17:24:08 2013
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -15,7 +15,7 @@ class Ui_Browser(object):
         Browser.resize(572, 566)
         self.verticalLayout = QtGui.QVBoxLayout(Browser)
         self.verticalLayout.setSpacing(0)
-        self.verticalLayout.setContentsMargins(2, 2, 2, 2)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.browser_header = QtGui.QFrame(Browser)
         self.browser_header.setMinimumSize(QtCore.QSize(0, 44))
@@ -59,7 +59,7 @@ class Ui_Browser(object):
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setObjectName("scroll_area")
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 566, 516))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 98, 28))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_4 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_4.setSpacing(0)
@@ -87,6 +87,7 @@ class Ui_Browser(object):
 "border-style: solid;\n"
 "border-width: 1px;\n"
 "border-radius: 2px;\n"
+"border-color: rgb(32,32,32);\n"
 "}")
         self.progress_bar.setText("")
         self.progress_bar.setPixmap(QtGui.QPixmap(":/res/progress_bar_1.png"))
@@ -106,6 +107,7 @@ class Ui_Browser(object):
 "border-style: solid;\n"
 "border-width: 1px;\n"
 "border-radius: 2px;\n"
+"border-color: rgb(32,32,32);\n"
 "}")
         self.status_message.setAlignment(QtCore.Qt.AlignCenter)
         self.status_message.setWordWrap(True)
@@ -123,4 +125,5 @@ class Ui_Browser(object):
         self.label.setText(QtGui.QApplication.translate("Browser", "<big>Browser Title</big>", None, QtGui.QApplication.UnicodeUTF8))
         self.status_message.setText(QtGui.QApplication.translate("Browser", "Sorry, no items found!", None, QtGui.QApplication.UnicodeUTF8))
 
+from . import resources_rc
 from . import resources_rc
