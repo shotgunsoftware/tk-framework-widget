@@ -173,7 +173,6 @@ class ThumbnailWidget(QtGui.QWidget):
         """
         current_widget = self
         while current_widget:
-            print "CURRENT WIDGET: %s" % current_widget
             if isinstance(current_widget, QtGui.QDialog):
                 return current_widget
             
