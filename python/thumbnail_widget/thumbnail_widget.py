@@ -8,6 +8,7 @@ import sys
 import tempfile
 import subprocess
 
+import tank
 from tank.platform.qt import QtCore, QtGui
 from .ui.thumbnail_widget import Ui_ThumbnailWidget
     
@@ -172,6 +173,7 @@ class ThumbnailWidget(QtGui.QWidget):
         """
         current_widget = self
         while current_widget:
+            print "CURRENT WIDGET: %s" % current_widget
             if isinstance(current_widget, QtGui.QDialog):
                 return current_widget
             
@@ -184,10 +186,13 @@ class ThumbnailWidget(QtGui.QWidget):
         Perform the actual screenshot
         """
         
-        # hide the containing window
-        # (AD) - we can't hide the window as this will break modality!  Instead
+        # hide the containing window - we can't actuall hide 
+        # the window as this will break modality!  Instead
         # we have to move the window off the screen:
         win = self._safe_get_dialog()
+        if not win and tank.platform.current_engine().name != "tk-nuke":
+            win = self.window()
+        
         win_geom = None
         if win:
             win_geom = win.geometry()
