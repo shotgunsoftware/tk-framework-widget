@@ -189,8 +189,6 @@ class ThumbnailWidget(QtGui.QWidget):
         # the window as this will break modality!  Instead
         # we have to move the window off the screen:
         win = self._safe_get_dialog()
-        if not win and tank.platform.current_engine().name != "tk-nuke":
-            win = self.window()
         
         win_geom = None
         if win:
