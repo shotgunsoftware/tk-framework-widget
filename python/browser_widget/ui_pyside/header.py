@@ -19,9 +19,7 @@ class Ui_Header(object):
         self.verticalLayout.setContentsMargins(3, 12, 3, 3)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label = QtGui.QLabel(Header)
-        self.label.setStyleSheet("#name_label {\n"
-"font-size: 16px\n"
-"}")
+        self.label.setStyleSheet("")
         self.label.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)

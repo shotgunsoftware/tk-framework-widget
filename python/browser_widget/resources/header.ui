@@ -44,9 +44,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="styleSheet">
-      <string notr="true">#name_label {
-font-size: 16px
-}</string>
+      <string notr="true"/>
      </property>
      <property name="text">
       <string>&lt;big&gt;Header&lt;/big&gt;</string>
