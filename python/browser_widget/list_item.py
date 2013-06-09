@@ -74,8 +74,8 @@ class ListItem(ListBase):
             self._timer.start(100)
             
             self._worker_uid = self._worker.queue_work(self._download_thumbnail, {"url": url})
-            self._worker.work_completed.connect(self._on_worker_task_complete)
-            self._worker.work_failure.connect( self._on_worker_failure)
+            self._worker.work_completed.connect(self._on_worker_task_complete, QtCore.Qt.QueuedConnection)
+            self._worker.work_failure.connect(self._on_worker_failure, QtCore.Qt.QueuedConnection)
         else:
             # assume url is a path on disk or resource
             self.ui.thumbnail.setPixmap(QtGui.QPixmap(url))
