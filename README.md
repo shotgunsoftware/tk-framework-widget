@@ -1,4 +1,4 @@
 tk-framework-widget
 ===================
 
-QT Widget Framework for Tank Apps
+QT Widget Framework for Shotgun Pipeline Toolkit Apps
