@@ -44,6 +44,7 @@ class BrowserWidget(QtGui.QWidget):
         self._dynamic_widgets = []
         self._multi_select = False
         self._search = True
+        self._last_item_to_show = None
         
         # spinner
         self._spin_icons = []
@@ -170,9 +171,6 @@ class BrowserWidget(QtGui.QWidget):
             x.deleteLater()
         self._dynamic_widgets = []
         
-        # lastly, clear selection
-        self.clear_selection()
-        
         self.list_modified.emit()
         
             
@@ -213,12 +211,11 @@ class BrowserWidget(QtGui.QWidget):
         return self._dynamic_widgets
         
     def select(self, item):
+        """
+        Select an item and ensure it is visible
+        """
         self._on_item_clicked(item)
-        # in order for the scroll to happen during load, first give
-        # the scroll area  chance to resize it self by processing its event queue.
-        QtCore.QCoreApplication.processEvents()
-        # and focus on the selection
-        self.ui.scroll_area.ensureWidgetVisible(item)
+        self._ensure_item_is_visible(item)
     
     ##########################################################################################
     # Protected stuff - implemented by deriving classes
@@ -316,6 +313,12 @@ class BrowserWidget(QtGui.QWidget):
         # stop timer:
         self._timer.stop()
         
+        # if something was 'selected' whilst doing work then
+        # ensure it is visible:
+        if self._last_item_to_show:
+            self._ensure_item_is_visible(self._last_item_to_show)
+            self._last_item_to_show = None
+        
         # and just in case the list has been modified
         self.list_modified.emit()
             
@@ -328,6 +331,23 @@ class BrowserWidget(QtGui.QWidget):
         self._current_spinner_index += 1
         if self._current_spinner_index == 4:
             self._current_spinner_index = 0            
+        
+    def _ensure_item_is_visible(self, item):
+        """
+        Ensure the item is visible by scrolling to it.
+        """
+        # check that the items page is the current page.  If
+        # it's not then we just keep track of the item to be 
+        # scrolled to when all current work is completed
+        if self.ui.main_pages.currentWidget() != self.ui.items_page:
+            self._last_item_to_show = item
+        else:
+            # in order for the scroll to happen during load, first give
+            # the scroll area  chance to resize it self by processing its event queue.
+            QtCore.QCoreApplication.processEvents()
+            # and focus on the selection
+            self.ui.scroll_area.ensureWidgetVisible(item)
+            
         
     def _on_item_clicked(self, item):
         
