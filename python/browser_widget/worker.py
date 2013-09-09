@@ -16,24 +16,35 @@ import sys
 from tank.platform.qt import QtCore, QtGui
 
 class Worker(QtCore.QThread):
+    """
+    Background worker class
+    """
     
     work_completed = QtCore.Signal(str, dict)
     work_failure = QtCore.Signal(str, str)
-        
     
     def __init__(self, app, parent=None):
+        """
+        Construction
+        """
         QtCore.QThread.__init__(self, parent)
         self._execute_tasks = True
         self._app = app
+        
         self._queue_mutex = QtCore.QMutex()
         self._queue = []
         self._receivers = {}
         
-    def stop(self):
+        self._wait_condition = QtCore.QWaitCondition()
+        
+    def stop(self, wait_for_completion=True):
         """
         Stops the worker, run this before shutdown
         """
         self._execute_tasks = False
+        self._wait_condition.wakeAll()
+        if wait_for_completion:
+            self.wait()
 
     def clear(self):
         """
@@ -62,6 +73,8 @@ class Worker(QtCore.QThread):
                 self._queue.append(work)
         finally:
             self._queue_mutex.unlock()
+
+        self._wait_condition.wakeAll()
         
         return uid
 
@@ -69,36 +82,39 @@ class Worker(QtCore.QThread):
     #
 
     def run(self):
-        
-        
+
         while self._execute_tasks:
             
+            # get the next item to process:
+            item_to_process = None
             self._queue_mutex.lock()
             try:
-                queue_len = len(self._queue)
+                if len(self._queue) == 0:
+                    # wait for some more work - this unlocks the mutex
+                    # until the wait condition is signalled where it
+                    # will then attempt to obtain a lock before returning
+                    self._wait_condition.wait(self._queue_mutex)
+                    
+                    if len(self._queue) == 0:
+                        # still nothing in the queue!
+                        continue
+                
+                item_to_process = self._queue.pop(0)
             finally:
                 self._queue_mutex.unlock()
-            
-            if queue_len == 0:
-                # polling. TODO: replace with semaphor!
-                self.msleep(200)
-            
-            else:
-                # pop queue
-                self._queue_mutex.lock()
-                try:
-                    item_to_process = self._queue.pop(0)
-                finally:
-                    self._queue_mutex.unlock()
 
-                data = None
-                try:
-                    data = item_to_process["fn"](item_to_process["params"])
-                except Exception, e:
-                    if self._execute_tasks:
-                        self.work_failure.emit(item_to_process["id"], "An error occured: %s" % e)
-                    
-                else:
-                    if self._execute_tasks:
-                        self.work_completed.emit(item_to_process["id"], data)
+            if not self._execute_tasks:
+                break
+
+            # ok, have something to do so lets do it:
+            data = None
+            try:
+                # process the item:
+                data = item_to_process["fn"](item_to_process["params"])
+            except Exception, e:
+                if self._execute_tasks:
+                    self.work_failure.emit(item_to_process["id"], "An error occured: %s" % e)
+            else:
+                if self._execute_tasks:
+                    self.work_completed.emit(item_to_process["id"], data)
                 
