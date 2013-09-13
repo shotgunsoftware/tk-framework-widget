@@ -20,6 +20,13 @@ class Worker(QtCore.QThread):
     Background worker class
     """
     
+    # Indicates that this worker class has been fixed to stop 
+    # gc of QThread from resulting in a crash.  This happens 
+    # when the mutex object had been gc'd but the thread is 
+    # still trying to acces it - the fix is to wait for the 
+    # thread to terminate before returning from 'stop()'
+    _SGTK_IMPLEMENTS_QTHREAD_CRASH_FIX_=True    
+    
     work_completed = QtCore.Signal(str, dict)
     work_failure = QtCore.Signal(str, str)
     

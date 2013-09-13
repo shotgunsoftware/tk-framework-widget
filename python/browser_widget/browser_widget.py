@@ -18,8 +18,6 @@ from .worker import Worker
 
 class BrowserWidget(QtGui.QWidget):
     
-    _TK_FRAMEWORK_BROWSERWIDGET_HAS_V_0_1_17_THREADING_FIX__ = True
-    
     ######################################################################################
     # SIGNALS
     
