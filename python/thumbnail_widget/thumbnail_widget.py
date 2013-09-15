@@ -248,7 +248,7 @@ class ThumbnailWidget(QtGui.QWidget):
 
             er = screenshot_thread.get_error()
             if er:
-                raise TankError("Failed to capture screenshot: %s" % er)
+                raise tank.TankError("Failed to capture screenshot: %s" % er)
             
             # load into pixmap:
             pm = QtGui.QPixmap(path)
