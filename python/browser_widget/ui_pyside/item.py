@@ -11,7 +11,7 @@ from tank.platform.qt import QtCore, QtGui
 class Ui_Item(object):
     def setupUi(self, Item):
         Item.setObjectName("Item")
-        Item.resize(388, 100)
+        Item.resize(332, 71)
         self.horizontalLayout_2 = QtGui.QHBoxLayout(Item)
         self.horizontalLayout_2.setContentsMargins(2, 2, 2, 2)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
@@ -30,8 +30,8 @@ class Ui_Item(object):
         self.horizontalLayout.setContentsMargins(2, 2, 2, 2)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.thumbnail = ThumbnailLabel(self.background)
-        self.thumbnail.setMinimumSize(QtCore.QSize(130, 90))
-        self.thumbnail.setMaximumSize(QtCore.QSize(130, 90))
+        self.thumbnail.setMinimumSize(QtCore.QSize(80, 55))
+        self.thumbnail.setMaximumSize(QtCore.QSize(80, 55))
         self.thumbnail.setStyleSheet("")
         self.thumbnail.setText("")
         self.thumbnail.setPixmap(QtGui.QPixmap(":/res/thumb_empty.png"))
