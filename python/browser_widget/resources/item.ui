@@ -38,7 +38,7 @@ border-color: rgb(32,32,32);
        <number>8</number>
       </property>
       <property name="margin">
-       <number>2</number>
+       <number>4</number>
       </property>
       <item>
        <widget class="ThumbnailLabel" name="thumbnail">
