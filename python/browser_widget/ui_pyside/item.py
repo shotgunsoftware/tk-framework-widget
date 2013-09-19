@@ -27,7 +27,7 @@ class Ui_Item(object):
         self.background.setObjectName("background")
         self.horizontalLayout = QtGui.QHBoxLayout(self.background)
         self.horizontalLayout.setSpacing(8)
-        self.horizontalLayout.setContentsMargins(2, 2, 2, 2)
+        self.horizontalLayout.setContentsMargins(4, 4, 4, 4)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.thumbnail = ThumbnailLabel(self.background)
         self.thumbnail.setMinimumSize(QtCore.QSize(80, 55))
