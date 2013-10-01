@@ -85,12 +85,18 @@ class BrowserWidget(QtGui.QWidget):
         
         self._current_title_style = "none"
         self.title_style = "gradient"
-        
-    @property
-    def title_style(self):
+
+    # @property
+    def _get_title_style(self):
+        """
+        title_style property getter
+        """
         return self._current_title_style
-    @title_style.setter
-    def title_style(self, value):
+    # @title.setter
+    def _set_title_style(self, value):
+        """
+        title_style property setter
+        """
         if value != self._current_title_style and value in self._title_styles.keys():
             # change style sheet:
             self._current_title_style = value
@@ -103,7 +109,8 @@ class BrowserWidget(QtGui.QWidget):
             margins = self._title_margins.get(self._current_title_style)
             if margins:
                 self.ui.browser_header.layout().setContentsMargins(margins[0], margins[1], margins[2], margins[3])
-        
+    title_style = property(_get_title_style, _set_title_style)
+            
     def enable_multi_select(self, enable):
         """
         Should we enable multi select

@@ -46,16 +46,16 @@ class ThumbnailWidget(QtGui.QWidget):
         self._btns_transition_anim = None
         self._update_ui()
 
-    @property
-    def thumbnail(self):
+    # @property
+    def _get_thumbnail(self):
         pm = self._ui.thumbnail.pixmap()
         return pm if pm and not pm.isNull() else None
-    
-    @thumbnail.setter
-    def thumbnail(self, value):
+    # @thumbnail.setter
+    def _set_thumbnail(self, value):
         self._ui.thumbnail.setPixmap(value if value else QtGui.QPixmap())
         self._update_ui()
         self.thumbnail_changed.emit()
+    thumbnail = property(_get_thumbnail, _set_thumbnail)
         
     def enable_screen_capture(self, enable):
         self._ui.camera_btn.setVisible(enable)
@@ -231,13 +231,19 @@ class ThumbnailWidget(QtGui.QWidget):
         
             # make sure this event is processed:
             QtCore.QCoreApplication.processEvents()
-
+            QtCore.QCoreApplication.sendPostedEvents(None, 0)
+            QtCore.QCoreApplication.flush()
+            
         path = None
         pm = None
         try:
             # get temporary file to use:
-            with tempfile.NamedTemporaryFile(suffix=".png", prefix="tanktmp", delete=False) as temp_file:
-                path = temp_file.name
+            # to be cross-platform and python 2.5 compliant, we can't use
+            # tempfile.NamedTemporaryFile with delete=False.  Instead, we
+            # use tempfile.mkstemp which does practically the same thing!
+            tf, path = tempfile.mkstemp(suffix=".png", prefix="tanktmp")
+            if tf:
+                os.close(tf)
 
             # do screenshot with thread so we don't block anything
             screenshot_thread = ThumbnailWidget.ScreenshotThread(path)
@@ -259,7 +265,7 @@ class ThumbnailWidget(QtGui.QWidget):
                 QtCore.QCoreApplication.processEvents()
             
             # remove the temporary file:
-            if path:
+            if path and os.path.exists(path):
                 os.remove(path)
 
         return pm
