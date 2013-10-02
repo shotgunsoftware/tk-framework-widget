@@ -30,6 +30,7 @@ class ListItem(ListBase):
         self._selected = False
         self._worker = worker
         self._worker_uid = None
+        self._connected_to_worker=False
         
         # spinner
         self._spin_icons = []
@@ -79,9 +80,15 @@ class ListItem(ListBase):
             # start spinning
             self._timer.start(100)
             
+            if not self._connected_to_worker:
+                # make sure we are connected to the worker before we start work
+                # otherwise we might miss the completed/failure signal!
+                self._connected_to_worker = True
+                self._worker.work_completed.connect(self._on_worker_task_complete)
+                self._worker.work_failure.connect( self._on_worker_failure)            
+            
+            # queue job to download the thumbnail:
             self._worker_uid = self._worker.queue_work(self._download_thumbnail, {"url": url})
-            self._worker.work_completed.connect(self._on_worker_task_complete)
-            self._worker.work_failure.connect( self._on_worker_failure)
         else:
             # assume url is a path on disk or resource
             self.ui.thumbnail.setPixmap(QtGui.QPixmap(url))
