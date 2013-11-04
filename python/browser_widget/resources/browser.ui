@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>510</width>
+    <width>591</width>
     <height>565</height>
    </rect>
   </property>
@@ -108,7 +108,7 @@ padding-left: 15px</string>
    <item>
     <widget class="QStackedWidget" name="main_pages">
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="items_page">
       <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -131,8 +131,8 @@ padding-left: 15px</string>
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>98</width>
-            <height>28</height>
+            <width>589</width>
+            <height>519</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -142,6 +142,17 @@ padding-left: 15px</string>
            <property name="margin">
             <number>4</number>
            </property>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_7">
+             <item>
+              <widget class="QToolButton" name="load_all_top">
+               <property name="text">
+                <string>Showing 50 out of 250 matches. Click to load all...</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
            <item>
             <layout class="QVBoxLayout" name="scroll_area_layout">
              <property name="spacing">
@@ -161,6 +172,17 @@ padding-left: 15px</string>
               </size>
              </property>
             </spacer>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_8">
+             <item>
+              <widget class="QToolButton" name="load_all_bottom">
+               <property name="text">
+                <string>Showing 50 out of 250 matches. Click to load all...</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>

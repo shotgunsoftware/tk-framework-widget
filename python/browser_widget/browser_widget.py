@@ -16,6 +16,8 @@ from .ui_pyside.browser import Ui_Browser
      
 from .worker import Worker
 
+MAX_WIDGETS_TO_DISPLAY = 75
+
 class BrowserWidget(QtGui.QWidget):
     
     ######################################################################################
@@ -50,7 +52,6 @@ class BrowserWidget(QtGui.QWidget):
         self._dynamic_widgets = []
         self._multi_select = False
         self._search = True
-        self._last_item_to_show = None
         
         # spinner
         self._spin_icons = []
@@ -63,7 +64,13 @@ class BrowserWidget(QtGui.QWidget):
         self._current_spinner_index = 0
         
         # search
-        self.ui.search.textEdited.connect(self._on_search_text_changed)
+        self.ui.search.textEdited.connect(self._on_search_box_input)
+        
+        # load all items
+        self.ui.load_all_top.clicked.connect(self._on_load_all_clicked)
+        self.ui.load_all_bottom.clicked.connect(self._on_load_all_clicked)
+        # reset the deferred loading counters and settings
+        self._reset_load_more()
         
         # style:
         self._title_base_style = {
@@ -85,6 +92,31 @@ class BrowserWidget(QtGui.QWidget):
         
         self._current_title_style = "none"
         self.title_style = "gradient"
+        
+    def _reset_load_more(self):
+        """
+        set the load more buttons to a disabled state
+        """
+        self._num_visible_widgets = 0
+        self._show_all_mode_enabled = False
+        self.ui.load_all_top.setVisible(False)
+        self.ui.load_all_bottom.setVisible(False)
+        
+        
+    def _compute_load_button_visible(self, total_num_widgets):
+        """
+        Enable/disable the "load more" buttons based on the number of items loaded.
+        """
+        if self._num_visible_widgets > MAX_WIDGETS_TO_DISPLAY and not self._show_all_mode_enabled:
+            msg = "Showing %d of %d items. Click to show all." % (MAX_WIDGETS_TO_DISPLAY, total_num_widgets)
+            self.ui.load_all_top.setText(msg)
+            self.ui.load_all_bottom.setText(msg)
+            self.ui.load_all_top.setVisible(True)
+            self.ui.load_all_bottom.setVisible(True)
+            
+        else:
+            self.ui.load_all_top.setVisible(False)
+            self.ui.load_all_bottom.setVisible(False)            
 
     # @property
     def _get_title_style(self):
@@ -92,6 +124,7 @@ class BrowserWidget(QtGui.QWidget):
         title_style property getter
         """
         return self._current_title_style
+    
     # @title.setter
     def _set_title_style(self, value):
         """
@@ -108,7 +141,10 @@ class BrowserWidget(QtGui.QWidget):
             # change margins:
             margins = self._title_margins.get(self._current_title_style)
             if margins:
-                self.ui.browser_header.layout().setContentsMargins(margins[0], margins[1], margins[2], margins[3])
+                self.ui.browser_header.layout().setContentsMargins(margins[0], 
+                                                                   margins[1], 
+                                                                   margins[2], 
+                                                                   margins[3])
     title_style = property(_get_title_style, _set_title_style)
             
     def enable_multi_select(self, enable):
@@ -144,6 +180,7 @@ class BrowserWidget(QtGui.QWidget):
         Sets the text next to the search button 
         """
         self.ui.label.setText("<big>%s</big>" % label)
+        
     ######################################################################################
     # Public Methods
     
@@ -164,11 +201,15 @@ class BrowserWidget(QtGui.QWidget):
         """
         Clear widget of its contents.
         """
-        # hide overlays
-        self.ui.main_pages.setCurrentWidget(self.ui.items_page)
+        
+        # reset load more buttons..
+        self._reset_load_more()
         
         # clear search box
-        self.ui.search.setText("")
+        self.ui.search.setText("")        
+        
+        # hide overlays
+        self.ui.main_pages.setCurrentWidget(self.ui.items_page)
         
         # also reset any jobs that are processing. No point processing them
         # if their requestors are gone.
@@ -252,15 +293,43 @@ class BrowserWidget(QtGui.QWidget):
         style_elements = ["%s: %s;" % (key, value) for key, value in style_dict.iteritems()] 
         return "%s { %s }" % (name, "".join(style_elements)) 
     
-    def _on_search_text_changed(self, text):
+    def _on_search_box_input(self):
         """
-        Cull based on search box
+        When text is typed into the search box
         """
-
-        if text == "":
+        # first make sure that we reset the load more buttons, since the search is changing
+        self._show_all_mode_enabled = False
+        # now update our list
+        self._update_items_based_on_search_box()
+    
+    def _update_items_based_on_search_box(self):
+        """
+        Cull items displayed in list based on search box
+        """
+        from . import list_item
+        
+        # track how many widgets we could display if culling was off
+        total_num_widgets = 0
+        self._num_visible_widgets = 0
+        
+        # get the text in the search bar
+        text = self.ui.search.text()
+        
+        if text == "":    
             # show all items
             for i in self._dynamic_widgets:
-                i.setVisible(True)
+                total_num_widgets += 1
+                if isinstance(i, list_item.ListItem) and \
+                   self._show_all_mode_enabled == False and \
+                   self._num_visible_widgets > MAX_WIDGETS_TO_DISPLAY:
+                    i.setVisible(False)
+                    i.setEnabled(False)
+                    
+                else:
+                    self._num_visible_widgets += 1
+                    i.setVisible(True)
+                    i.setEnabled(True)
+                    
 
         elif len(text) > 2: # cull by string for strings > 2 chars
             
@@ -287,10 +356,29 @@ class BrowserWidget(QtGui.QWidget):
                     i.setVisible(True)
                 
                 elif lower_text in details_lower: 
-                    i.setVisible(True)
-                    
+                    # match!
+                    total_num_widgets += 1
+                    if self._num_visible_widgets > MAX_WIDGETS_TO_DISPLAY and \
+                       self._show_all_mode_enabled == False:
+                        i.setEnabled(False)
+                        i.setVisible(False)
+                    else:
+                        self._num_visible_widgets += 1
+                        i.setVisible(True)
+                        i.setEnabled(True)
                 else:
+                    # no match!
                     i.setVisible(False)
+                    i.setEnabled(False)
+                    
+        # see if we need to turn on the load more buttons
+        self._compute_load_button_visible(total_num_widgets)
+        
+        # and if there is a selection, try to scroll to it!        
+        si = self.get_selected_item()
+        if si:
+            self._ensure_item_is_visible(si)
+                    
     
     def _on_worker_failure(self, uid, msg):
         """
@@ -316,9 +404,9 @@ class BrowserWidget(QtGui.QWidget):
             # not our job. ignore
             return
     
-        # process!
+        # process - this will typically add items using add_item()
         self.process_result(data)
-
+                
         # if currently showing progress, switch to items page:
         if self.ui.main_pages.currentWidget() == self.ui.loading_page:
             self.ui.main_pages.setCurrentWidget(self.ui.items_page)
@@ -326,12 +414,9 @@ class BrowserWidget(QtGui.QWidget):
         # stop timer:
         self._timer.stop()
         
-        # if something was 'selected' whilst doing work then
-        # ensure it is visible:
-        if self._last_item_to_show:
-            self._ensure_item_is_visible(self._last_item_to_show)
-            self._last_item_to_show = None
-        
+        # display items in the UI, based on the search criteria
+        self._update_items_based_on_search_box()
+                
         # and just in case the list has been modified
         self.list_modified.emit()
             
@@ -349,18 +434,23 @@ class BrowserWidget(QtGui.QWidget):
         """
         Ensure the item is visible by scrolling to it.
         """
-        # check that the items page is the current page.  If
-        # it's not then we just keep track of the item to be 
-        # scrolled to when all current work is completed
-        if self.ui.main_pages.currentWidget() != self.ui.items_page:
-            self._last_item_to_show = item
-        else:
-            # in order for the scroll to happen during load, first give
-            # the scroll area  chance to resize it self by processing its event queue.
-            QtCore.QCoreApplication.processEvents()
-            # and focus on the selection
-            self.ui.scroll_area.ensureWidgetVisible(item)
+        # make sure it is visible and enabled
+        # it may have been turned off by the culling or the searching
+        item.setVisible(True)
+        item.setEnabled(True)
+        # in order for the scroll to happen during load, first give
+        # the scroll area  chance to resize it self by processing its event queue.
+        QtCore.QCoreApplication.processEvents()
+        # and focus on the selection
+        self.ui.scroll_area.ensureWidgetVisible(item)
             
+    def _on_load_all_clicked(self):
+        """
+        Triggered when someone clicks the "show all records" button
+        """        
+        self._show_all_mode_enabled = True
+        self._update_items_based_on_search_box()
+        
         
     def _on_item_clicked(self, item):
         
@@ -385,22 +475,14 @@ class BrowserWidget(QtGui.QWidget):
         """
         Adds a list item. Returns the created object.
         """
-        widget = item_class(self._app, self._worker, self)
+        widget = item_class(self._app, self._worker, self)        
+        widget.setVisible(False)
+        widget.setEnabled(False)
         self.ui.scroll_area_layout.addWidget(widget)
         self._dynamic_widgets.append(widget)   
         widget.clicked.connect( self._on_item_clicked )
         widget.double_clicked.connect( self._on_item_double_clicked )  
-        
         self.list_modified.emit()
          
         return widget  
-
-
-
-
-        
-        
-        
-
-
 
