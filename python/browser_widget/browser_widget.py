@@ -308,6 +308,18 @@ class BrowserWidget(QtGui.QWidget):
         """
         from . import list_item
         
+        # if we are currently on the items listing page
+        # (and not on a message page)
+        # start the spinner and turn it off after load
+        if self.ui.main_pages.currentWidget() == self.ui.items_page:
+            running_spinner = True
+        else:
+            running_spinner = False
+        
+        if running_spinner:
+            self.ui.main_pages.setCurrentWidget(self.ui.loading_page)
+            self._timer.start(100)        
+        
         # track how many widgets we could display if culling was off
         total_num_widgets = 0
         self._num_visible_widgets = 0
@@ -378,6 +390,11 @@ class BrowserWidget(QtGui.QWidget):
         si = self.get_selected_item()
         if si:
             self._ensure_item_is_visible(si)
+                    
+        # turn off spinner
+        if running_spinner:
+            self.ui.main_pages.setCurrentWidget(self.ui.items_page)
+            self._timer.stop()
                     
     
     def _on_worker_failure(self, uid, msg):
