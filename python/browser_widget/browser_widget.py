@@ -206,7 +206,9 @@ class BrowserWidget(QtGui.QWidget):
         self._reset_load_more()
         
         # clear search box
-        self.ui.search.setText("")        
+        # commented out as of #23302 take 2
+        # the search field will not be cleared as the widget is cleared.
+        # self.ui.search.setText("")        
         
         # hide overlays
         self.ui.main_pages.setCurrentWidget(self.ui.items_page)
