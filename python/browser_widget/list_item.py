@@ -10,11 +10,12 @@
 
 import urlparse
 import os
-import urllib
+import tempfile
 import shutil
 import sys
 
 from tank.platform.qt import QtCore, QtGui
+import tank 
 from .ui_pyside.item import Ui_Item
 
 from .list_base import ListBase
@@ -129,21 +130,18 @@ class ListItem(ListBase):
             return {"thumb_path": path_to_cached_thumb }
         
         # ok so the thumbnail was not in the cache. Get it.
-        try:
-            (temp_file, stuff) = urllib.urlretrieve(url)
-        except Exception, e:
-            print "Could not download data from the url '%s'. Error: %s" % (url, e)
-            return None
-
+        temp_directory = tempfile.mkdtemp()
+        temp_file = os.path.join(temp_directory, path_chunks[-1])
+        tank.util.download_url(self._app.shotgun, url, temp_file)
+        
         # now try to cache it
         try:
             self._app.ensure_folder_exists(os.path.dirname(path_to_cached_thumb))
             shutil.copy(temp_file, path_to_cached_thumb)
-            # as a tmp file downloaded by urlretrieve, permissions are super strict
             # modify the permissions of the file so it's writeable by others
             os.chmod(path_to_cached_thumb, 0666)            
         except Exception, e:
-            print "Could not cache thumbnail %s in %s. Error: %s" % (url, path_to_cached_thumb, e)
+            raise tank.TankError("Could not cache thumbnail %s in %s. Error: %s" % (url, path_to_cached_thumb, e))
         
         return {"thumb_path": temp_file }
         
