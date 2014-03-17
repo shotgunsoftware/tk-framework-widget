@@ -25,9 +25,6 @@ class ListItem(ListBase):
     def __init__(self, app, worker, parent=None):
         ListBase.__init__(self, app, worker, parent)
 
-        # set up the UI
-        self.ui = Ui_Item() 
-        self.ui.setupUi(self)
         self._selected = False
         self._worker = worker
         self._worker_uid = None
@@ -97,6 +94,17 @@ class ListItem(ListBase):
         
     ############################################################################################
     # internal stuff
+
+    def _setup_ui(self):
+        """
+        Setup the Qt UI.  Typically, this just instantiates the UI class
+        and calls its .setupUi(self) method.
+        
+        :returns:    The constructed QWidget
+        """
+        ui = Ui_Item()
+        ui.setupUi(self)
+        return ui
         
     def _style_as_string(self, name, style_dict):
         style_elements = ["%s: %s;" % (key, value) for key, value in style_dict.iteritems()] 

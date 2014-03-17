@@ -21,10 +21,6 @@ class ListHeader(ListBase):
     def __init__(self, app, worker, parent=None):
         ListBase.__init__(self, app, worker, parent)
 
-        # set up the UI
-        self.ui = Ui_Header() 
-        self.ui.setupUi(self)
-
         # initialize line to be plain and the same colour as the text:        
         self.ui.line.setFrameShadow(QtGui.QFrame.Plain)
         clr = QtGui.QApplication.palette().text().color()
@@ -35,3 +31,15 @@ class ListHeader(ListBase):
         
     def get_title(self):
         return self.ui.label.text()
+    
+    def _setup_ui(self):
+        """
+        Setup the Qt UI.  Typically, this just instantiates the UI class
+        and calls its .setupUi(self) method.
+        
+        :returns:    The constructed QWidget
+        """
+        ui = Ui_Header()
+        ui.setupUi(self)
+        return ui
+    
