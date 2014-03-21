@@ -14,6 +14,7 @@ import sys
 
 from tank.platform.qt import QtCore, QtGui
 
+from .ui_pyside import resources_rc
 
 class ListBase(QtGui.QWidget):
     
@@ -25,6 +26,7 @@ class ListBase(QtGui.QWidget):
         QtGui.QWidget.__init__(self, parent)
         self._app = app
         self._worker = worker
+        self.ui = self._setup_ui()
 
     def supports_selection(self):
         return False
@@ -54,5 +56,17 @@ class ListBase(QtGui.QWidget):
 
     def get_details(self):
         return None
+
+    def _setup_ui(self):
+        """
+        Setup the Qt UI.  Typically, this just instantiates the UI class
+        and calls its .setupUi(self) method.
+        
+        This can be overriden in child classes - this provides a simple
+        mechanism to replace the item UI with a custom version if needed
+        
+        :returns:    The constructed QWidget
+        """
+        raise NotImplementedError()
 
     
