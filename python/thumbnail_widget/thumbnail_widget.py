@@ -69,14 +69,25 @@ class ThumbnailWidget(QtGui.QWidget):
         """
         if self.thumbnail and self._are_any_btns_enabled():
             self._ui.buttons_frame.show()
-            self._run_btns_transition_anim(QtCore.QAbstractAnimation.Forward)
+            if hasattr(QtCore, "QAbstractAnimation"):
+                self._run_btns_transition_anim(QtCore.QAbstractAnimation.Forward)
+            else:
+                # Q*Animation classes aren't available so just
+                # make sure the button is visible:
+                self.btn_visibility = 1.0
         
     def leaveEvent(self, event):
         """
         when the cursor leaves the control, hide the buttons
         """
         if self.thumbnail and self._are_any_btns_enabled():
-            self._run_btns_transition_anim(QtCore.QAbstractAnimation.Backward)
+            if hasattr(QtCore, "QAbstractAnimation"):
+                self._run_btns_transition_anim(QtCore.QAbstractAnimation.Backward)
+            else:
+                # Q*Animation classes aren't available so just
+                # make sure the button is hidden:
+                self._ui.buttons_frame.hide()
+                self.btn_visibility = 0.0
         
     def _are_any_btns_enabled(self):
         """
