@@ -16,8 +16,10 @@ import sys
 
 from tank.platform.qt import QtCore, QtGui
 import tank 
-from .ui_pyside.item import Ui_Item
 
+shotgun_data = tank.platform.import_framework("tk-framework-shotgunutils", "shotgun_data")
+
+from .ui_pyside.item import Ui_Item
 from .list_base import ListBase
 
 class ListItem(ListBase):
@@ -120,38 +122,24 @@ class ListItem(ListBase):
             self._current_spinner_index = 0            
         
     def _download_thumbnail(self, data):
+        """
+        Download a thumbnail into the standard  Toolkit thumbnail cache
+        
+        :param data:    Dictionary that should contain a 'url' key, the value of which is the url of 
+                        the thumbnail to download.
+        :returns:       A dictionary containing a 'thumb_path' key, the value of which is the path
+                        to the cached thumbnail
+        """
         url = data["url"]
         
-        # first check in our thumbnail cache
-        url_obj = urlparse.urlparse(url)
-        url_path = url_obj.path
-        path_chunks = url_path.split("/")
-        
-        path_chunks.insert(0, self._app.cache_location)
-        # now have something like ["/studio/proj/tank/cache/tk-framework-widget", "", "thumbs", "1", "2", "2.jpg"]
-        
-        # treat the list of path chunks as an arg list
-        path_to_cached_thumb = os.path.join(*path_chunks)
-        
-        if os.path.exists(path_to_cached_thumb):
-            # cached! sweet!
-            return {"thumb_path": path_to_cached_thumb }
-        
-        # ok so the thumbnail was not in the cache. Get it.
-        temp_directory = tempfile.mkdtemp()
-        temp_file = os.path.join(temp_directory, path_chunks[-1])
-        tank.util.download_url(self._app.shotgun, url, temp_file)
-        
-        # now try to cache it
+        path_to_cached_thumb = None
         try:
-            self._app.ensure_folder_exists(os.path.dirname(path_to_cached_thumb))
-            shutil.copy(temp_file, path_to_cached_thumb)
-            # modify the permissions of the file so it's writeable by others
-            os.chmod(path_to_cached_thumb, 0666)            
+            path_to_cached_thumb = shotgun_data.ShotgunDataRetriever.download_thumbnail(url, self._app)
         except Exception, e:
-            raise tank.TankError("Could not cache thumbnail %s in %s. Error: %s" % (url, path_to_cached_thumb, e))
+            self._app.log_info("Could not get thumbnail for url '%s'. Error: %s" % (url, e))
+            path_to_cached_thumb = None      
         
-        return {"thumb_path": temp_file }
+        return {"thumb_path": path_to_cached_thumb}
         
     def _on_worker_task_complete(self, uid, data):
         if uid != self._worker_uid:
