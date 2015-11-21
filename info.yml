@@ -28,6 +28,7 @@ requires_core_version: "v0.14.58"
 
 # the frameworks this framework requires
 frameworks:
+    - {"name": "tk-framework-qtwidgets", "version": "v2.x.x"}
     - {"name": "tk-framework-shotgunutils", "version": "v2.x.x"}
 
  

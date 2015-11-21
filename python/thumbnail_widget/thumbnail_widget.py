@@ -17,6 +17,8 @@ import tank
 from tank.platform.qt import QtCore, QtGui
 from .ui.thumbnail_widget import Ui_ThumbnailWidget
     
+screen_grab = tank.platform.import_framework("tk-framework-qtwidgets", "screen_grab")
+    
 class ThumbnailWidget(QtGui.QWidget):
     """
     Thumbnail widget that provides screen capture functionality
@@ -195,36 +197,7 @@ class ThumbnailWidget(QtGui.QWidget):
             current_widget = current_widget.parentWidget()
             
         return None
-           
-    class ScreenshotThread(QtCore.QThread):
-        """
-        Wrap screenshot call in a thread just to be on the safe side!  
-        This helps avoid the os thinking the application has hung for 
-        certain applications (e.g. Softimage on Windows)
-        """
-        def __init__(self, path):
-            QtCore.QThread.__init__(self)
-            self._path = path
-            self._error = None
-            
-        def get_error(self):
-            return self._error
-            
-        def run(self):
-            try:
-                if sys.platform == "darwin":
-                    # use built-in screenshot command on the mac
-                    os.system("screencapture -m -i -s %s" % self._path)
-                elif sys.platform == "linux2":
-                    # use image magick
-                    os.system("import %s" % self._path)
-                elif sys.platform == "win32":
-                    # use external boxcutter tool
-                    bc = os.path.abspath(os.path.join(__file__, "../resources/boxcutter.exe"))
-                    subprocess.check_call([bc, self._path])
-            except Exception, e:
-                self._error = str(e)
-           
+                      
     def _on_screenshot(self):
         """
         Perform the actual screenshot
@@ -245,8 +218,6 @@ class ThumbnailWidget(QtGui.QWidget):
             QtCore.QCoreApplication.sendPostedEvents(None, 0)
             QtCore.QCoreApplication.flush()
             
-        path = None
-        pm = None
         try:
             # get temporary file to use:
             # to be cross-platform and python 2.5 compliant, we can't use
@@ -256,27 +227,12 @@ class ThumbnailWidget(QtGui.QWidget):
             if tf:
                 os.close(tf)
 
-            # do screenshot with thread so we don't block anything
-            screenshot_thread = ThumbnailWidget.ScreenshotThread(path)
-            screenshot_thread.start()
-            while not screenshot_thread.isFinished():
-                screenshot_thread.wait(100)
-                QtGui.QApplication.processEvents()
-
-            er = screenshot_thread.get_error()
-            if er:
-                raise tank.TankError("Failed to capture screenshot: %s" % er)
+            pm = screen_grab.screen_capture()
             
-            # load into pixmap:
-            pm = QtGui.QPixmap(path)
         finally:
             # restore the window:
             if win:
                 win.setGeometry(win_geom)
                 QtCore.QCoreApplication.processEvents()
-            
-            # remove the temporary file:
-            if path and os.path.exists(path):
-                os.remove(path)
 
         return pm
