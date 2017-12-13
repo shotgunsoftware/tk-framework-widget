@@ -27,7 +27,7 @@ class Worker(QtCore.QThread):
     # thread to terminate before returning from 'stop()'
     _SGTK_IMPLEMENTS_QTHREAD_CRASH_FIX_=True    
     
-    work_completed = QtCore.Signal(str, dict)
+    work_completed = QtCore.Signal(str, object)
     work_failure = QtCore.Signal(str, str)
     
     def __init__(self, app, parent=None):
