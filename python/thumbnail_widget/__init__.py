@@ -9,3 +9,5 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 from .thumbnail_widget import ThumbnailWidget
+
+__all__ = ("ThumbnailWidget",)

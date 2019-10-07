@@ -14,15 +14,11 @@ Basic Tank Widget Framework
 """
 
 import tank
-import platform
-import sys
-import traceback
-import os
 
 
 class WidgetFramework(tank.platform.Framework):
 
-    ##########################################################################################
+    ###########################################################################
     # init and destroy
 
     def init_framework(self):

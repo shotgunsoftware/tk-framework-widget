@@ -10,3 +10,5 @@
 
 from . import browser_widget
 from . import thumbnail_widget
+
+__all__ = "browser_widget", "thumbnail_widget"

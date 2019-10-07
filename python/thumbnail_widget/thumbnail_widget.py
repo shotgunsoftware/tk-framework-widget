@@ -9,9 +9,7 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 import os
-import sys
 import tempfile
-import subprocess
 
 import tank
 from tank.platform.qt import QtCore, QtGui
@@ -110,7 +108,11 @@ class ThumbnailWidget(QtGui.QWidget):
     def set_btn_visibility(self, value):
         self._btns_visibility = value
         self._ui.buttons_frame.setStyleSheet(
-            "#buttons_frame {border-radius: 2px; background-color: rgba(32, 32, 32, %d);}"
+            (
+                "#buttons_frame {"
+                "border-radius: 2px; background-color: rgba(32, 32, 32, %d);"
+                "}"
+            )
             % (64 * value)
         )
 

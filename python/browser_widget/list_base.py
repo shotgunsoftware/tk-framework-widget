@@ -8,13 +8,9 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
-import os
-import urllib
-import sys
-
 from tank.platform.qt import QtCore, QtGui
 
-from .ui import resources_rc
+from .ui import resources_rc  # noqa
 
 
 class ListBase(QtGui.QWidget):

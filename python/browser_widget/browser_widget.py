@@ -8,9 +8,6 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
-import os
-import sys
-
 from tank.platform.qt import QtCore, QtGui
 from .ui.browser import Ui_Browser
 
@@ -21,7 +18,7 @@ MAX_WIDGETS_TO_DISPLAY = 75
 
 class BrowserWidget(QtGui.QWidget):
 
-    ######################################################################################
+    ###########################################################################
     # SIGNALS
 
     # when the selection changes
@@ -33,7 +30,7 @@ class BrowserWidget(QtGui.QWidget):
     # called when the list contents have been modified:
     list_modified = QtCore.Signal()
 
-    ######################################################################################
+    ###########################################################################
     # Init & Destruct
 
     def __init__(self, parent=None):
@@ -83,7 +80,12 @@ class BrowserWidget(QtGui.QWidget):
         }
         self._title_styles = {
             "gradient": {
-                "background": "qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(97, 97, 97, 255), stop:1 rgba(49, 49, 49, 255));"
+                "background": (
+                    "qlineargradient("
+                    "spread:pad, x1:0, y1:0, x2:0, y2:1, "
+                    "stop:0 rgba(97, 97, 97, 255), "
+                    "stop:1 rgba(49, 49, 49, 255));"
+                )
             },
             "none": {},
         }
@@ -185,7 +187,7 @@ class BrowserWidget(QtGui.QWidget):
         """
         self.ui.label.setText("<big>%s</big>" % label)
 
-    ######################################################################################
+    ###########################################################################
     # Public Methods
 
     def load(self, data):
@@ -276,7 +278,7 @@ class BrowserWidget(QtGui.QWidget):
         self._on_item_clicked(item)
         self._ensure_item_is_visible(item)
 
-    ##########################################################################################
+    ###########################################################################
     # Protected stuff - implemented by deriving classes
 
     def get_data(self, data):
@@ -291,7 +293,7 @@ class BrowserWidget(QtGui.QWidget):
         """
         raise Exception("not implemented!")
 
-    ##########################################################################################
+    ###########################################################################
     # Internals
 
     def _style_as_string(self, name, style_dict):
@@ -304,7 +306,8 @@ class BrowserWidget(QtGui.QWidget):
         """
         When text is typed into the search box
         """
-        # first make sure that we reset the load more buttons, since the search is changing
+        # first make sure that we reset the load more buttons, since the search
+        # is changing
         self._show_all_mode_enabled = False
         # now update our list
         self._update_items_based_on_search_box()
@@ -340,7 +343,7 @@ class BrowserWidget(QtGui.QWidget):
                 total_num_widgets += 1
                 if (
                     isinstance(i, list_item.ListItem)
-                    and self._show_all_mode_enabled == False
+                    and self._show_all_mode_enabled is False
                     and self._num_visible_widgets > MAX_WIDGETS_TO_DISPLAY
                 ):
                     i.setVisible(False)
@@ -380,7 +383,7 @@ class BrowserWidget(QtGui.QWidget):
                     total_num_widgets += 1
                     if (
                         self._num_visible_widgets > MAX_WIDGETS_TO_DISPLAY
-                        and self._show_all_mode_enabled == False
+                        and self._show_all_mode_enabled is False
                     ):
                         i.setEnabled(False)
                         i.setVisible(False)
@@ -477,7 +480,7 @@ class BrowserWidget(QtGui.QWidget):
 
     def _on_item_clicked(self, item):
 
-        if item.supports_selection() == False:
+        if item.supports_selection() is False:
             # not all items are selectable
             return
 

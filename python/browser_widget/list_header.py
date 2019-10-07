@@ -8,10 +8,7 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
-import os
-import sys
-
-from tank.platform.qt import QtCore, QtGui
+from tank.platform.qt import QtGui
 from .ui.header import Ui_Header
 
 from .list_base import ListBase

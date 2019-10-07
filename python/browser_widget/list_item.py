@@ -8,21 +8,15 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
-import urlparse
-import os
-import tempfile
-import shutil
-import sys
-
 from tank.platform.qt import QtCore, QtGui
 import tank
+
+from .ui.item import Ui_Item
+from .list_base import ListBase
 
 shotgun_data = tank.platform.import_framework(
     "tk-framework-shotgunutils", "shotgun_data"
 )
-
-from .ui.item import Ui_Item
-from .list_base import ListBase
 
 
 class ListItem(ListBase):
@@ -100,7 +94,7 @@ class ListItem(ListBase):
             # assume url is a path on disk or resource
             self.ui.thumbnail.setPixmap(QtGui.QPixmap(url))
 
-    ############################################################################################
+    ###########################################################################
     # internal stuff
 
     def _setup_ui(self):
@@ -133,10 +127,10 @@ class ListItem(ListBase):
         """
         Download a thumbnail into the standard  Toolkit thumbnail cache
 
-        :param data:    Dictionary that should contain a 'url' key, the value of which is the url of
-                        the thumbnail to download.
-        :returns:       A dictionary containing a 'thumb_path' key, the value of which is the path
-                        to the cached thumbnail
+        :param data:    Dictionary that should contain a 'url' key, the value
+                        of which is the url of the thumbnail to download.
+        :returns:       A dictionary containing a 'thumb_path' key, the value
+                        of which is the path to the cached thumbnail
         """
         url = data["url"]
 
@@ -164,7 +158,7 @@ class ListItem(ListBase):
         try:
             path = data.get("thumb_path")
             self.ui.thumbnail.setPixmap(QtGui.QPixmap(path))
-        except:
+        except Exception:
             self.ui.thumbnail.setPixmap(QtGui.QPixmap(":/res/thumb_empty.png"))
 
     def _on_worker_failure(self, uid, msg):
