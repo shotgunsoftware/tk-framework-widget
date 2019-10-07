@@ -23,7 +23,7 @@ class ThumbnailLabel(QtGui.QLabel):
         # scale the pixmap down to fit
         if pixmap.height() > 55 or pixmap.width() > 80:
             # scale it down to 120x80
-            pixmap = pixmap.scaled( QtCore.QSize(80,55), 
+            pixmap = pixmap.scaled( QtCore.QSize(80, 55), 
                                     QtCore.Qt.KeepAspectRatio, 
                                     QtCore.Qt.SmoothTransformation)
 

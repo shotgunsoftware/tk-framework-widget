@@ -86,8 +86,8 @@ class BrowserWidget(QtGui.QWidget):
             "none":{}
         }
         self._title_margins = {
-            "gradient":[12,3,12,3],
-            "none":[3,3,3,3]
+            "gradient":[12, 3, 12, 3],
+            "none":[3, 3, 3, 3]
         }
         
         self._current_title_style = "none"

@@ -38,7 +38,7 @@ class ThumbnailWidget(QtGui.QWidget):
         # create layout to control buttons frame
         layout = QtGui.QHBoxLayout()
         layout.addWidget(self._ui.buttons_frame)
-        layout.setContentsMargins(0,0,0,0)
+        layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
         self.setLayout(layout)
         
@@ -143,7 +143,7 @@ class ThumbnailWidget(QtGui.QWidget):
     
         # maximum size of thumbnail is widget geom:
         thumbnail_geom = self.geometry()
-        thumbnail_geom.moveTo(0,0)
+        thumbnail_geom.moveTo(0, 0)
         scale_contents = False
         
         pm = self.thumbnail
