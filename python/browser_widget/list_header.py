@@ -12,7 +12,7 @@ import os
 import sys
 
 from tank.platform.qt import QtCore, QtGui
-from .ui_pyside.header import Ui_Header
+from .ui.header import Ui_Header
 
 from .list_base import ListBase
 

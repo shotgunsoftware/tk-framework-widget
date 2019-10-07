@@ -12,7 +12,7 @@ import os
 import sys
 
 from tank.platform.qt import QtCore, QtGui
-from .ui_pyside.browser import Ui_Browser
+from .ui.browser import Ui_Browser
      
 from .worker import Worker
 

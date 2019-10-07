@@ -19,7 +19,7 @@ import tank
 
 shotgun_data = tank.platform.import_framework("tk-framework-shotgunutils", "shotgun_data")
 
-from .ui_pyside.item import Ui_Item
+from .ui.item import Ui_Item
 from .list_base import ListBase
 
 class ListItem(ListBase):
