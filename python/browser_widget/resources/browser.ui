@@ -91,13 +91,13 @@
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">border-width: 1px; 
+         <string notr="true">border-width: 1px;
 background-image: url(:/res/search.png);
 background-repeat: no-repeat;
 background-position: center left;
-border-style: inset; 
-border-color: #535353; 
-border-radius: 9px; 
+border-style: inset;
+border-color: #535353;
+border-radius: 9px;
 padding-left: 15px</string>
         </property>
        </widget>
