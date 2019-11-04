@@ -49,3 +49,14 @@ class TestFramework(TankTestBase):
         # we need to import a module in order to trigger
         # an import of all the framework modules.
         fw.import_module("browser_widget")
+
+    def test_widgets(self):
+        """
+        Ensure we can instantiate the widgets.
+
+        In lieu of a proper test suite that fully tests the widgets, we'll
+        use the about box that uses them, which will give us some code coverage
+        for really cheap.
+        """
+        fw = self.engine.commands["Work Area Info..."]["callback"]()
+        self.engine.app.processEvents()
