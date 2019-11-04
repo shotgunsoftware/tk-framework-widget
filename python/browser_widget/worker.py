@@ -111,9 +111,11 @@ class Worker(QtCore.QThread):
             try:
                 # process the item:
                 data = item_to_process["fn"](item_to_process["params"])
-            except Exception, e:
+            except Exception as e:
                 if self._execute_tasks:
-                    self.work_failure.emit(item_to_process["id"], "An error occured: %s" % e)
+                    self.work_failure.emit(
+                        item_to_process["id"], "An error occured: %s" % e
+                    )
             else:
                 if self._execute_tasks:
                     self.work_completed.emit(item_to_process["id"], data)
