@@ -14,7 +14,7 @@ import sys
 
 from tank.platform.qt import QtCore, QtGui
 
-from .ui_pyside import resources_rc
+from .ui import resources_rc
 
 class ListBase(QtGui.QWidget):
     
