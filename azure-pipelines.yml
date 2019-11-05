@@ -40,6 +40,7 @@ variables:
 jobs:
 - template: build-pipeline.yml@templates
   parameters:
+    tk_toolchain_ref: test_engine_with_qt
     additional_repositories:
     - name: tk-framework-shotgunutils
       ref: SG-13267_python3_part_two
