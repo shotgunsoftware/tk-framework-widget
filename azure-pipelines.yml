@@ -44,6 +44,6 @@ jobs:
     - name: tk-framework-shotgunutils
       ref: SG-13267_python3_part_two
     - name: tk-framework-qtwidgets
-      ref: SG-13267_python3_part_two
+      ref: SG-13266_python_3_port
     - name: tk-framework-about
-      ref: SG-13267_python3_part_two
+      ref: SG-14189_python_3_syntax
