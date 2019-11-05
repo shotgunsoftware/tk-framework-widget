@@ -59,4 +59,15 @@ class TestFramework(TankTestBase):
         for really cheap.
         """
         fw = self.engine.commands["Work Area Info..."]["callback"]()
-        self.engine.app.processEvents()
+
+        self.engine.q_app.processEvents()
+
+        dialogs = [
+            w
+            for w in self.engine.q_app.allWidgets()
+            if isinstance(w, sgtk.platform.qt.QtGui.QDialog)
+        ]
+        assert len(dialogs) == 1
+        dialogs[0].close()
+        dialogs[0].destroy()
+        self.engine.q_app.processEvents()
