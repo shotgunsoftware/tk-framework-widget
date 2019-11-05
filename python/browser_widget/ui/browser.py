@@ -34,13 +34,13 @@ class Ui_Browser(object):
         self.search = QtGui.QLineEdit(self.browser_header)
         self.search.setMinimumSize(QtCore.QSize(150, 0))
         self.search.setMaximumSize(QtCore.QSize(150, 16777215))
-        self.search.setStyleSheet("border-width: 1px; \n"
+        self.search.setStyleSheet("border-width: 1px;\n"
 "background-image: url(:/res/search.png);\n"
 "background-repeat: no-repeat;\n"
 "background-position: center left;\n"
-"border-style: inset; \n"
-"border-color: #535353; \n"
-"border-radius: 9px; \n"
+"border-style: inset;\n"
+"border-color: #535353;\n"
+"border-radius: 9px;\n"
 "padding-left: 15px")
         self.search.setObjectName("search")
         self.horizontalLayout_4.addWidget(self.search)
