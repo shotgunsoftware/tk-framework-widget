@@ -69,5 +69,6 @@ class TestFramework(TankTestBase):
         ]
         assert len(dialogs) == 1
         dialogs[0].close()
+        self.engine.q_app.processEvents()
         dialogs[0].destroy()
         self.engine.q_app.processEvents()
