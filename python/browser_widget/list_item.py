@@ -8,7 +8,6 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
-import urlparse
 import os
 import tempfile
 import shutil
@@ -115,9 +114,7 @@ class ListItem(ListBase):
         return ui
 
     def _style_as_string(self, name, style_dict):
-        style_elements = [
-            "%s: %s;" % (key, value) for key, value in style_dict.iteritems()
-        ]
+        style_elements = ["%s: %s;" % (key, value) for key, value in style_dict.items()]
         return "%s { %s }" % (name, "".join(style_elements))
 
     def _update_spinner(self):

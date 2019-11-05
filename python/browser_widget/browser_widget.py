@@ -295,9 +295,7 @@ class BrowserWidget(QtGui.QWidget):
     # Internals
 
     def _style_as_string(self, name, style_dict):
-        style_elements = [
-            "%s: %s;" % (key, value) for key, value in style_dict.iteritems()
-        ]
+        style_elements = ["%s: %s;" % (key, value) for key, value in style_dict.items()]
         return "%s { %s }" % (name, "".join(style_elements))
 
     def _on_search_box_input(self):
