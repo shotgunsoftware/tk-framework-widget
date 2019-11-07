@@ -68,7 +68,7 @@ class TestFramework(TankTestBase):
             if isinstance(w, sgtk.platform.qt.QtGui.QDialog)
         ]
         assert len(dialogs) == 1
-        dialogs[0].close()
-        self.engine.q_app.processEvents()
-        dialogs[0].destroy()
-        self.engine.q_app.processEvents()
+        sgtk.platform.qt.QtCore.QTimer.singleShot(
+            2000, lambda: (dialogs[0].close(), self.engine.q_app.quit())
+        )
+        self.engine.q_app.exec_()
