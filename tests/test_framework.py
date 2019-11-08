@@ -49,29 +49,3 @@ class TestFramework(TankTestBase):
         # we need to import a module in order to trigger
         # an import of all the framework modules.
         fw.import_module("browser_widget")
-
-    def test_widgets(self):
-        """
-        Ensure we can instantiate the widgets.
-
-        In lieu of a proper test suite that fully tests the widgets, we'll
-        use the about box that uses them, which will give us some code coverage
-        for really cheap.
-        """
-        fw = self.engine.commands["Work Area Info..."]["callback"]()
-
-        self.engine.q_app.processEvents()
-
-        dialogs = [
-            w
-            for w in self.engine.q_app.allWidgets()
-            if isinstance(w, sgtk.platform.qt.QtGui.QDialog)
-        ]
-        assert len(dialogs) == 1
-
-        def close_app():
-            dialogs[0].close()
-            self.engine.q_app.quit()
-
-        sgtk.platform.qt.QtCore.QTimer.singleShot(2000, close_app)
-        self.engine.q_app.exec_()

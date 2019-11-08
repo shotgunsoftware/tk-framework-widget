@@ -45,5 +45,3 @@ jobs:
       ref: SG-13267_python3_part_two
     - name: tk-framework-qtwidgets
       ref: SG-13266_python_3_port
-    - name: tk-multi-about
-      ref: SG-14189_python_3_syntax
