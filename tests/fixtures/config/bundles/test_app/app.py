@@ -17,5 +17,8 @@ import sgtk
 
 class TestApp(sgtk.platform.Application):
     """
-    Dummy app that does nothing.
+    Dummy app that does nothing. It's sole purpose is so that
+    it can request the use of the widget framework so we
+    can access it from the tests. frameworks cannot be imported
+    from outside an application bundle.
     """
