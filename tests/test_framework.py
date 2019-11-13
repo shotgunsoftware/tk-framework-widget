@@ -1,4 +1,4 @@
-# Copyright (c) 2013 Shotgun Software Inc.
+# Copyright (c) 2019 Shotgun Software Inc.
 #
 # CONFIDENTIAL AND PROPRIETARY
 #
@@ -43,8 +43,6 @@ class TestFramework(TankTestBase):
         """
         Ensure we can import the framework.
         """
-        # We can't load modules from a test because load_framework can only be called
-        # from within a Toolkit bundle or hook, so we'll do it from a hook.
         fw = self.engine.apps["tk-testapp"].frameworks["tk-framework-widget"]
         # we need to import a module in order to trigger
         # an import of all the framework modules.
