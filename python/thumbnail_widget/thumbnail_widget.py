@@ -123,7 +123,7 @@ class ThumbnailWidget(QtGui.QWidget):
         if not self._btns_transition_anim:
             # set up anim:
             self._btns_transition_anim = QtCore.QPropertyAnimation(
-                self, "btn_visibility"
+                self, b"btn_visibility"
             )
             self._btns_transition_anim.setDuration(150)
             self._btns_transition_anim.setStartValue(0.0)

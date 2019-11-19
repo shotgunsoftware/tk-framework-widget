@@ -49,8 +49,8 @@ class ListItem(ListBase):
             "border-radius": "2px",
             "border-style": "solid",
             "border-width": "1px",
-            "border-color": "rgb(0,0,0,48)",
-            "background-color": "rgb(0,0,0,48)",
+            "border-color": "rgba(0,0,0,48)",
+            "background-color": "rgba(0,0,0,48)",
         }
         self._selected_style = self._unselected_style.copy()
         self._selected_style["background-color"] = "rgb(112, 112, 112)"
