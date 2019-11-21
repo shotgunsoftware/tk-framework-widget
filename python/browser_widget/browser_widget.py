@@ -12,8 +12,8 @@ import os
 import sys
 
 from tank.platform.qt import QtCore, QtGui
+from tank_vendor.shotgun_api3.lib import six
 from .ui.browser import Ui_Browser
-
 from .worker import Worker
 
 MAX_WIDGETS_TO_DISPLAY = 75
@@ -352,7 +352,7 @@ class BrowserWidget(QtGui.QWidget):
         elif len(text) > 2:  # cull by string for strings > 2 chars
 
             # if running PyQt, convert QString to str
-            if not isinstance(text, basestring):
+            if not isinstance(text, six.string_types):
                 # convert QString to str
                 text = str(text)
 
@@ -365,7 +365,7 @@ class BrowserWidget(QtGui.QWidget):
 
                 # if running PyQt, convert QString to str
                 details_lower = details
-                if not isinstance(details_lower, basestring):
+                if not isinstance(details_lower, six.string_types):
                     details_lower = str(details_lower)
                 # now we have a str or unicode object which has the lower() method
                 details_lower = details_lower.lower()
