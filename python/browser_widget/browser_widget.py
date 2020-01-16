@@ -12,7 +12,7 @@ import os
 import sys
 
 from tank.platform.qt import QtCore, QtGui
-from tank_vendor.shotgun_api3.lib import six
+from tank_vendor import six
 from .ui.browser import Ui_Browser
 from .worker import Worker
 
