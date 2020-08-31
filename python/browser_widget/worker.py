@@ -44,7 +44,7 @@ class Worker(QtCore.QThread):
 
         self._wait_condition = Condition(self._queue_mutex)
 
-    def stop(self, wait_for_completion=True):
+    def stop(self, wait_for_completion=False):
         """
         Stops the worker, run this before shutdown
         """
