@@ -44,7 +44,7 @@ class Worker(QtCore.QThread):
 
         self._wait_condition = Condition(self._queue_mutex)
 
-    def stop(self, wait_for_completion=False):
+    def stop(self, wait_for_completion=True):
         """
         Stops the worker, run this before shutdown
         """
@@ -53,7 +53,9 @@ class Worker(QtCore.QThread):
             self._wait_condition.notifyAll()
 
         if wait_for_completion:
-            self.wait()
+            self.isRunning()
+            self.quit()
+            self.wait(1)
 
     def clear(self):
         """
