@@ -88,8 +88,10 @@ class ListItem(ListBase):
                 # make sure we are connected to the worker before we start work
                 # otherwise we might miss the completed/failure signal!
                 self._connected_to_worker = True
-                self._worker.work_completed.connect(self._on_worker_task_complete)
-                self._worker.work_failure.connect(self._on_worker_failure)
+                self._worker.notifier.work_completed.connect(
+                    self._on_worker_task_complete
+                )
+                self._worker.notifier.work_failure.connect(self._on_worker_failure)
 
             # queue job to download the thumbnail:
             self._worker_uid = self._worker.queue_work(
