@@ -68,6 +68,8 @@ class Worker(Thread):
         if wait_for_completion:
             self.join()
 
+        self._notifier.deleteLater()
+
     def clear(self):
         """
         Empties the queue
