@@ -11,10 +11,19 @@
 import uuid
 
 from tank.platform.qt import QtCore
-from threading import Lock, Condition
+from threading import Lock, Condition, Thread
+
+# Simple class to allow Worker to notify any observers of
+# completed or failure events. We cannot emit signals
+# directly from the Worker since it does not inherit
+# from QObject, now that we're using Python native threads
+# instead of QtCore.QThread
+class WorkerNotifier(QtCore.QObject):
+    work_completed = QtCore.Signal(str, object)
+    work_failure = QtCore.Signal(str, str)
 
 
-class Worker(QtCore.QThread):
+class Worker(Thread):
     """
     Background worker class
     """
@@ -26,14 +35,12 @@ class Worker(QtCore.QThread):
     # thread to terminate before returning from 'stop()'
     _SGTK_IMPLEMENTS_QTHREAD_CRASH_FIX_ = True
 
-    work_completed = QtCore.Signal(str, object)
-    work_failure = QtCore.Signal(str, str)
-
     def __init__(self, app, parent=None):
         """
         Construction
         """
-        QtCore.QThread.__init__(self, parent)
+        super(Worker, self).__init__()
+
         self._execute_tasks = True
         self._app = app
 
@@ -44,6 +51,12 @@ class Worker(QtCore.QThread):
 
         self._wait_condition = Condition(self._queue_mutex)
 
+        self._notifier = WorkerNotifier()
+
+    @property
+    def notifier(self):
+        return self._notifier
+
     def stop(self, wait_for_completion=True):
         """
         Stops the worker, run this before shutdown
@@ -53,7 +66,9 @@ class Worker(QtCore.QThread):
             self._wait_condition.notifyAll()
 
         if wait_for_completion:
-            self.wait()
+            self.join()
+
+        self._notifier.deleteLater()
 
     def clear(self):
         """
@@ -113,9 +128,9 @@ class Worker(QtCore.QThread):
                 data = item_to_process["fn"](item_to_process["params"])
             except Exception as e:
                 if self._execute_tasks:
-                    self.work_failure.emit(
+                    self.notifier.work_failure.emit(
                         item_to_process["id"], "An error occured: %s" % e
                     )
             else:
                 if self._execute_tasks:
-                    self.work_completed.emit(item_to_process["id"], data)
+                    self.notifier.work_completed.emit(item_to_process["id"], data)

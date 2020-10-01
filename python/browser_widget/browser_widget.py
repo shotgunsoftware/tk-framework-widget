@@ -174,8 +174,8 @@ class BrowserWidget(QtGui.QWidget):
         self._app = app
         # set up worker queue
         self._worker = Worker(app)
-        self._worker.work_completed.connect(self._on_worker_signal)
-        self._worker.work_failure.connect(self._on_worker_failure)
+        self._worker.notifier.work_completed.connect(self._on_worker_signal)
+        self._worker.notifier.work_failure.connect(self._on_worker_failure)
 
         self._worker.start()
 
