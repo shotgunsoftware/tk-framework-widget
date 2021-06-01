@@ -19,7 +19,7 @@ requires_shotgun_fields:
 
 # More verbose description of this item
 display_name: "Widget Framework"
-description: "Collection of standard Shotgun Pipeline Toolkit Related Q-Widgets."
+description: "Collection of standard ShotGrid Pipeline Toolkit Related Q-Widgets."
 
 # Required minimum versions for this item to run
 requires_shotgun_version:
