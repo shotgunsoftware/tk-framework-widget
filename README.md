@@ -5,13 +5,13 @@
 
 ## Documentation
 
-**Note**: The functionality in this repo is being replaced by the tk-framework-qtwidgets framework.  It is worth checking there for what you are looking for and checking with support@shotgunsoftware.com before starting to use this framework.
+**Note**: The functionality in this repo is being replaced by the tk-framework-qtwidgets framework.  It is worth checking there for what you are looking for and checking with https://knowledge.autodesk.com/contact-support before starting to use this framework.
 
 This repository is a part of the ShotGrid Pipeline Toolkit.
 
 - For more information about this app and for release notes, *see the wiki section*.
 - For general information and documentation, click here: https://developer.shotgridsoftware.com/d587be80/?title=Integrations+User+Guide
-- For information about ShotGrid in general, click here: http://www.shotgunsoftware.com/toolkit
+- For information about ShotGrid in general, click here: https://www.shotgridsoftware.com/integrations
 
 ## Using this framework in your Setup
 All the frameworks that are part of our standard app suite are pushed to our App Store.
@@ -20,4 +20,4 @@ working on. For an overview of all the Apps, Engines, and Frameworks in the Tool
 click here: https://developer.shotgridsoftware.com/6d10dedf/?title=Apps+and+Engines+Configuration+Reference
 
 ## Have a Question?
-Don't hesitate to contact us! You can find us on support@shotgunsoftware.com
+Don't hesitate to contact us! You can find us on https://knowledge.autodesk.com/contact-support
