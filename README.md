@@ -7,7 +7,7 @@
 
 **Note**: The functionality in this repo is being replaced by the tk-framework-qtwidgets framework.  It is worth checking there for what you are looking for and checking with https://knowledge.autodesk.com/contact-support before starting to use this framework.
 
-This repository is a part of the Flow Production Tracking.
+This repository is a part of the Flow Production Tracking Toolkit.
 
 - For more information about this app and for release notes, *see the wiki section*.
 - For general information and documentation, click here: https://developer.shotgridsoftware.com/d587be80/?title=Integrations+User+Guide
