@@ -1,40 +1,54 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'header.ui'
-#
-#      by: pyside-uic 0.2.15 running on PySide 1.2.2
-#
-# WARNING! All changes made in this file will be lost!
+################################################################################
+## Form generated from reading UI file 'header.ui'
+##
+## Created by: Qt User Interface Compiler version 5.15.2
+##
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
 
-from tank.platform.qt import QtCore, QtGui
+from tank.platform.qt import QtCore
+for name, cls in QtCore.__dict__.items():
+    if isinstance(cls, type): globals()[name] = cls
+
+from tank.platform.qt import QtGui
+for name, cls in QtGui.__dict__.items():
+    if isinstance(cls, type): globals()[name] = cls
+
 
 class Ui_Header(object):
     def setupUi(self, Header):
-        Header.setObjectName("Header")
+        if not Header.objectName():
+            Header.setObjectName(u"Header")
         Header.resize(389, 37)
-        Header.setMinimumSize(QtCore.QSize(0, 0))
-        Header.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.verticalLayout = QtGui.QVBoxLayout(Header)
+        Header.setMinimumSize(QSize(0, 0))
+        Header.setMaximumSize(QSize(16777215, 16777215))
+        self.verticalLayout = QVBoxLayout(Header)
         self.verticalLayout.setSpacing(2)
+        self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(3, 12, 3, 3)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.label = QtGui.QLabel(Header)
-        self.label.setStyleSheet("")
-        self.label.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft)
-        self.label.setObjectName("label")
+        self.label = QLabel(Header)
+        self.label.setObjectName(u"label")
+        self.label.setStyleSheet(u"")
+        self.label.setAlignment(Qt.AlignBottom|Qt.AlignLeading|Qt.AlignLeft)
+
         self.verticalLayout.addWidget(self.label)
-        self.line = QtGui.QFrame(Header)
-        self.line.setStyleSheet("")
-        self.line.setFrameShadow(QtGui.QFrame.Plain)
-        self.line.setFrameShape(QtGui.QFrame.HLine)
-        self.line.setFrameShadow(QtGui.QFrame.Sunken)
-        self.line.setObjectName("line")
+
+        self.line = QFrame(Header)
+        self.line.setObjectName(u"line")
+        self.line.setStyleSheet(u"")
+        self.line.setFrameShadow(QFrame.Plain)
+        self.line.setFrameShape(QFrame.HLine)
+
         self.verticalLayout.addWidget(self.line)
 
         self.retranslateUi(Header)
-        QtCore.QMetaObject.connectSlotsByName(Header)
+
+        QMetaObject.connectSlotsByName(Header)
+    # setupUi
 
     def retranslateUi(self, Header):
-        Header.setWindowTitle(QtGui.QApplication.translate("Header", "Form", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("Header", "<big>Header</big>", None, QtGui.QApplication.UnicodeUTF8))
-
+        Header.setWindowTitle(QCoreApplication.translate("Header", u"Form", None))
+        self.label.setText(QCoreApplication.translate("Header", u"<big>Header</big>", None))
+    # retranslateUi
