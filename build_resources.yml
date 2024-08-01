@@ -1,0 +1,20 @@
+# YAML Configuration File for Qt Resource Building
+#
+# For more information:
+# https://github.com/shotgunsoftware/tk-toolchain?tab=readme-ov-file#tk-build-qt-resources
+
+- ui_src: python/browser_widget/resources
+  ui_files:
+    - header
+    - item
+    - browser
+  res_files:
+    - resources
+  py_dest: python/browser_widget/ui
+
+- ui_src: python/thumbnail_widget/resources
+  ui_files:
+    - thumbnail_widget
+  res_files:
+    - resources
+  py_dest: python/thumbnail_widget/ui
