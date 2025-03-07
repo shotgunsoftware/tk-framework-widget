@@ -13,6 +13,7 @@ import uuid
 from tank.platform.qt import QtCore
 from threading import Lock, Condition, Thread
 
+
 # Simple class to allow Worker to notify any observers of
 # completed or failure events. We cannot emit signals
 # directly from the Worker since it does not inherit
