@@ -5,7 +5,7 @@
 
 ## Documentation
 
-**Note**: The functionality in this repo is being replaced by the tk-framework-qtwidgets framework.  It is worth checking there for what you are looking for and checking with https://knowledge.autodesk.com/contact-support before starting to use this framework.
+**Note**: The functionality in this repo is being replaced by the tk-framework-qtwidgets framework.  It is worth checking there for what you are looking for and checking with https://www.autodesk.com/support before starting to use this framework.
 
 This repository is a part of the Flow Production Tracking Toolkit.
 
@@ -20,4 +20,4 @@ working on. For an overview of all the Apps, Engines, and Frameworks in the Tool
 click here: https://developer.shotgridsoftware.com/6d10dedf/?title=Apps+and+Engines+Configuration+Reference
 
 ## Have a Question?
-Don't hesitate to contact us! You can find us on https://knowledge.autodesk.com/contact-support
+Don't hesitate to contact us! You can find us on https://www.autodesk.com/support
