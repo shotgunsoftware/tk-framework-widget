@@ -40,7 +40,7 @@ class Worker(Thread):
         """
         Construction
         """
-        super(Worker, self).__init__()
+        super().__init__()
 
         self._execute_tasks = True
         self._app = app

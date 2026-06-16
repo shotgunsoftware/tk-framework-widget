@@ -24,6 +24,7 @@ description: "Collection of standard Flow Production Tracking Related Q-Widgets.
 # Required minimum versions for this item to run
 requires_shotgun_version:
 requires_core_version: "v0.19.1"
+minimum_python_version: "3.9"
 
 # the frameworks this framework requires
 frameworks:
