@@ -27,7 +27,7 @@ class TestFramework(TankTestBase):
         """
         Prepare a configuration with a config that uses the framework.
         """
-        super(TestFramework, self).setUp()
+        super().setUp()
         self.setup_fixtures()
         context = sgtk.Context(self.tk, project=self.project)
         self.engine = sgtk.platform.start_engine("tk-testengine", self.tk, context)
@@ -37,7 +37,7 @@ class TestFramework(TankTestBase):
         Terminate the engine and the rest of the test suite.
         """
         self.engine.destroy()
-        super(TestFramework, self).tearDown()
+        super().tearDown()
 
     def test_import_framework(self):
         """
